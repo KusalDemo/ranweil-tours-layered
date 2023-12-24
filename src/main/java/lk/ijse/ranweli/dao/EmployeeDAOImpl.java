@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.EmployeeDto;
@@ -10,8 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeModel {
-    public static boolean saveEmployee(EmployeeDto dto) throws SQLException {
+public class EmployeeDAOImpl implements EmployeeDAO {
+    @Override
+    public boolean saveEmployee(EmployeeDto dto) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO employee VALUES(?,?,?,?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -31,8 +32,8 @@ public class EmployeeModel {
 
 
     }
-
-    public static boolean deleteEmployee(String employeeId) throws SQLException{
+    @Override
+    public boolean deleteEmployee(String employeeId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "DELETE FROM employee WHERE empId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -44,8 +45,8 @@ public class EmployeeModel {
             return false;
         }
     }
-
-    public static boolean updateEmployee(EmployeeDto dto) throws SQLException{
+    @Override
+    public boolean updateEmployee(EmployeeDto dto) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE employee SET name = ?, address = ?, type = ?, availability = ?, salary = ? WHERE empId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -62,8 +63,8 @@ public class EmployeeModel {
             return false;
         }
     }
-
-    public static List<EmployeeDto> getAllEmployees() throws  SQLException{
+    @Override
+    public List<EmployeeDto> getAllEmployees() throws  SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM employee";
         PreparedStatement pstm = connection.prepareStatement(sql);

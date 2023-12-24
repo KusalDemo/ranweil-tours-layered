@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.model.PaymentModel;
+import lk.ijse.ranweli.dao.PaymentDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -174,7 +174,7 @@ public class DashboardFormController {
             public void run() {
                 System.out.println("End of month reached!");
                 try {
-                    boolean isResetSuccessfully = PaymentModel.resetAvailability();
+                    boolean isResetSuccessfully = PaymentDAOImpl.resetAvailability();
                     if(isResetSuccessfully) {
                         System.out.println("Availability reset successfully.");
                     } else {

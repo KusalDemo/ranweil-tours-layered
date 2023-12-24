@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import javafx.scene.image.Image;
 import lk.ijse.ranweli.db.DbConnection;
@@ -7,8 +7,9 @@ import lk.ijse.ranweli.dto.PaymentDto;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class PaymentModel {
-    public static boolean savePayment(PaymentDto paymentDto) throws SQLException {
+public class PaymentDAOImpl implements PaymentDAO {
+    @Override
+    public boolean savePayment(PaymentDto paymentDto) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO payment VALUES(?,?,?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -132,8 +133,8 @@ public class PaymentModel {
             connection.setAutoCommit(true);
         }
     }
-
-    public static ArrayList<PaymentDto> getAllPayments() throws SQLException {
+    @Override
+    public ArrayList<PaymentDto> getAllPayments() throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM payment";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -151,8 +152,8 @@ public class PaymentModel {
             ));
         }return paymentDtos;
     }
-
-    public static Image getReceipt(String payId) throws SQLException {
+    @Override
+    public Image getReceipt(String payId) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT receipt FROM payment WHERE payId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);

@@ -13,10 +13,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lk.ijse.ranweli.dao.EmployeeDAO;
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.EmployeeDto;
 import lk.ijse.ranweli.dto.tm.EmployeeTm;
-import lk.ijse.ranweli.model.EmployeeModel;
+import lk.ijse.ranweli.dao.EmployeeDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -48,6 +49,8 @@ public class EmployeeFormController {
     public Button btnReport;
     public Text txtTitle;
 
+    EmployeeDAO employeeDAO=new EmployeeDAOImpl();
+
     public void initialize(){
         new FadeInLeft(txtTitle).play();
        loadAllEmployess();
@@ -75,7 +78,7 @@ public class EmployeeFormController {
     }
 
     private void loadAllEmployess(){
-        EmployeeModel model=new EmployeeModel();
+        EmployeeDAOImpl model=new EmployeeDAOImpl();
         ObservableList<EmployeeTm> obList = FXCollections.observableArrayList();
 
         try{
@@ -101,7 +104,7 @@ public class EmployeeFormController {
             EmployeeDto dto=new EmployeeDto(employeeId,employeeName,employeeAddress,employeeType,employeeAvailability,employeeSalary);
 
             try {
-                boolean isSaved = EmployeeModel.saveEmployee(dto);
+                boolean isSaved = employeeDAO.saveEmployee(dto);
                 if(isSaved){
                     new Alert(Alert.AlertType.INFORMATION, "Save Successful").show();
                     loadAllEmployess();
@@ -129,7 +132,7 @@ public class EmployeeFormController {
         EmployeeDto dto=new EmployeeDto(employeeId,employeeName,employeeAddress,employeeType,employeeAvailability,employeeSalary);
 
         try {
-            boolean isUpdated= EmployeeModel.updateEmployee(dto);
+            boolean isUpdated= employeeDAO.updateEmployee(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                 clearFields();
@@ -158,7 +161,7 @@ public class EmployeeFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try {
-                    boolean isDeleted = EmployeeModel.deleteEmployee(employeeId);
+                    boolean isDeleted = employeeDAO.deleteEmployee(employeeId);
                     if(isDeleted){
                         new Alert(Alert.AlertType.INFORMATION, "Delete Successful").show();
                         clearFields();

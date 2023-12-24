@@ -12,9 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lk.ijse.ranweli.dao.PackageDAO;
 import lk.ijse.ranweli.dto.PackageDto;
 import lk.ijse.ranweli.dto.tm.PackageTm;
-import lk.ijse.ranweli.model.PackageModel;
+import lk.ijse.ranweli.dao.PackageDAOImpl;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -32,6 +33,7 @@ public class PackageFormController {
     public TextField txtDescription;
     public Button btnBack;
     public Text txtPackage;
+    PackageDAO packageDAO = new PackageDAOImpl();
 
     public void initialize(){
         new SlideInLeft(txtPackage).play();
@@ -58,7 +60,7 @@ public class PackageFormController {
     public void loadAllPackages(){
         try{
             ObservableList<PackageTm> obList = FXCollections.observableArrayList();
-            List<PackageDto> dtoLIst = PackageModel.getAllPackages();
+            List<PackageDto> dtoLIst = packageDAO.getAllPackages();
             for(PackageDto dto: dtoLIst){
                 obList.add(new PackageTm(dto.getPackageId(),dto.getPackageName(),dto.getDescription(),dto.getPrice()));
             }
@@ -77,7 +79,7 @@ public class PackageFormController {
 
         PackageDto dto = new PackageDto(packageId, packageName, description, price);
         try{
-            if(PackageModel.savePackage(dto)){
+            if(packageDAO.savePackage(dto)){
                 new Alert(Alert.AlertType.INFORMATION, "Package Saved").show();
                 clearFields();
                 loadAllPackages();
@@ -97,7 +99,7 @@ public class PackageFormController {
 
         PackageDto dto = new PackageDto(packageId, packageName, description, price);
         try{
-            if(PackageModel.updatePackage(dto)){
+            if(packageDAO.updatePackage(dto)){
                 new Alert(Alert.AlertType.INFORMATION, "Package Updated").show();
                 clearFields();
                 loadAllPackages();
@@ -124,7 +126,7 @@ public class PackageFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try{
-                    if(PackageModel.deletePackage(packageId)){
+                    if(packageDAO.deletePackage(packageId)){
                         new Alert(Alert.AlertType.INFORMATION, "Package Deleted").show();
                         clearFields();
                         loadAllPackages();

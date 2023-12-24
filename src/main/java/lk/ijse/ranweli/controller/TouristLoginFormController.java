@@ -15,8 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.Mail;
+import lk.ijse.ranweli.dao.TouristDAO;
 import lk.ijse.ranweli.dto.TouristDto;
-import lk.ijse.ranweli.model.TouristModel;
+import lk.ijse.ranweli.dao.TouristDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -40,6 +41,7 @@ public class TouristLoginFormController {
     public Text txtForgetPassword;
 
     public String userEmail;
+    TouristDAO touristDAO = new TouristDAOImpl();
 
 
 
@@ -50,11 +52,11 @@ public class TouristLoginFormController {
     public void loginBtnOnAction(ActionEvent actionEvent) throws SQLException, IOException {
         String touristId = txtUserId.getText();
         String password = txtPassword.getText();
-        TouristDto tourist = TouristModel.getTourist(touristId);
+        TouristDto tourist = touristDAO.getTourist(touristId);
         if(tourist!=null && tourist.getPassword().equals(password)){
             loggedUser = txtUserId.getText();
             loggedUserName=tourist.getName();
-            String touristEmail = TouristModel.getTouristEmailFromId(txtUserId.getText());
+            String touristEmail = touristDAO.getTouristEmailFromId(txtUserId.getText());
             Mail mail1 = new Mail();
             mail1.setMsg("Hi "+tourist.getName()+ ",\n\n\tUser :  "+ tourist.getIdentityDetails() +" \n\n\tNew Login Detected at :  "+ LocalDateTime.now() + " \n\nThank You,\n" +
                     "Ranweli Tours Support Team");
@@ -116,7 +118,7 @@ public class TouristLoginFormController {
 
     public void txtForgetPasswordOnAction(MouseEvent mouseEvent) throws SQLException {
         if(!txtUserId.getText().isEmpty()){
-            if(TouristModel.getTourist(txtUserId.getText())!=null) {
+            if(touristDAO.getTourist(txtUserId.getText())!=null) {
                 attemptingUser = txtUserId.getText();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
@@ -132,7 +134,7 @@ public class TouristLoginFormController {
                     if (response == buttonTypeYes) {
                         try {
                             oneTimePassword = generateOTP();
-                            String touristEmail = TouristModel.getTouristEmailFromId(txtUserId.getText());
+                            String touristEmail = touristDAO.getTouristEmailFromId(txtUserId.getText());
                             Mail mail = new Mail();
                             mail.setMsg("Hello," + "\n\n\tUser : " + touristEmail + " \n\n\tAn OTP Request Detected at :  " + LocalDateTime.now() + " \n\n\tOTP : " + oneTimePassword + " \n\nThank You,\n" +
                                     "Ranweli Tours Support Team");

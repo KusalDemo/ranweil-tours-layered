@@ -13,7 +13,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.model.TouristModel;
+import lk.ijse.ranweli.dao.TouristDAO;
+import lk.ijse.ranweli.dao.TouristDAOImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,6 +27,7 @@ public class ChangePasswordFormController {
     public PasswordField txtPassword;
     public PasswordField txtRePassword;
     public Text txtUserId;
+    TouristDAO touristDAO = new TouristDAOImpl();
 
     public void initialize() {
         new SlideInLeft(txtSubText).play();
@@ -68,7 +70,7 @@ public class ChangePasswordFormController {
         String password = txtPassword.getText();
         String rePassword = txtRePassword.getText();
         if(password.length()>=8 && password.equals(rePassword)){
-            boolean isChanged = TouristModel.changePassword(TouristLoginFormController.attemptingUser, password);
+            boolean isChanged = touristDAO.changePassword(TouristLoginFormController.attemptingUser, password);
             if(isChanged){
                 new Alert(Alert.AlertType.CONFIRMATION, "Password Changed Successfully | Redirecting to Login").showAndWait();
                 Parent root = FXMLLoader.load(getClass().getResource("/view/touristLogin_form.fxml"));

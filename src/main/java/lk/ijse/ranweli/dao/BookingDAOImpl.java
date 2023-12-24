@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import lk.ijse.ranweli.db.DbConnection;
 
@@ -7,8 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class BookingModel {
-    public static boolean saveBooking(String hotelId, String PackageId, String vehicleId) throws SQLException {
+public class BookingDAOImpl implements BookingDAO {
+    @Override
+    public boolean saveBooking(String hotelId, String PackageId, String vehicleId) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         try{
             connection.setAutoCommit(false);

@@ -16,8 +16,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.Mail;
+import lk.ijse.ranweli.dao.AdminDAO;
 import lk.ijse.ranweli.dto.AdminDto;
-import lk.ijse.ranweli.model.AdminModel;
+import lk.ijse.ranweli.dao.AdminDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -35,13 +36,15 @@ public class LoginFormController {
     public Text txtSubText;
     public static String loggedAdmin;
 
+    AdminDAO adminDAO = new AdminDAOImpl();
+
     public void initialize() {
         new SlideInLeft(txtSubText).play();
     }
     public void loginbtnOnAction(ActionEvent actionEvent)   {
         String email = txtUserName.getText();
         try {
-            AdminDto admindto= AdminModel.searchAdmin(email);
+            AdminDto admindto= adminDAO.searchAdmin(email);
 
             if(admindto != null){
                 if(admindto.getPassword().equals(txtPassword.getText())){

@@ -21,7 +21,7 @@ import lk.ijse.ranweli.dto.tm.EmployeeTm;
 import lk.ijse.ranweli.dto.tm.HotelTm;
 import lk.ijse.ranweli.dto.tm.PackageTm;
 import lk.ijse.ranweli.dto.tm.VehicleTm;
-import lk.ijse.ranweli.model.*;
+import lk.ijse.ranweli.dao.*;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -59,6 +59,12 @@ public class BookingFormController {
     public static String selectedGuideId;
     public static String selectedVehicleId;
     public static String selectedDriverId;
+
+    BookingDAO bookingDAO = new BookingDAOImpl();
+    EmployeeDAO employeeDAO = new EmployeeDAOImpl();
+    HotelDAO hotelDAO = new HotelDAOImpl();
+    PackageDAO packageDAO = new PackageDAOImpl();
+    VehicleDAO vehicleDAO=new VehicleDAOImpl();
 
     public void initialize() throws SQLException {
         loadTableDetails();
@@ -116,10 +122,10 @@ public class BookingFormController {
         ObservableList<EmployeeTm> obListGuides = FXCollections.observableArrayList();
         ObservableList<HotelTm> obListHotels = FXCollections.observableArrayList();
         ObservableList<PackageTm> obListPackages = FXCollections.observableArrayList();
-        List<VehicleDto> allVehicles = VehicleModel.getAllVehicles();
-        List<EmployeeDto> allEmployees = EmployeeModel.getAllEmployees();
-        List<HotelDto> allHotels = HotelModel.getAllHotels();
-        List<PackageDto> allPackages = PackageModel.getAllPackages();
+        List<VehicleDto> allVehicles = vehicleDAO.getAllVehicles();
+        List<EmployeeDto> allEmployees = employeeDAO.getAllEmployees();
+        List<HotelDto> allHotels = hotelDAO.getAllHotels();
+        List<PackageDto> allPackages = packageDAO.getAllPackages();
 
         for (EmployeeDto dto : allEmployees) {
             if((dto.getEmpType().equals("GUIDE")) && (dto.getEmpAvailability().equals("YES"))){
@@ -177,7 +183,7 @@ public class BookingFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try{
-                    boolean isBookingTempUpdated = BookingModel.saveBooking(selectedHotelId, selectedPackageId, selectedVehicleId);
+                    boolean isBookingTempUpdated = bookingDAO.saveBooking(selectedHotelId, selectedPackageId, selectedVehicleId);
                     if(isBookingTempUpdated){
                         System.out.println("Temparory Updated");
                     }

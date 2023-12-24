@@ -22,9 +22,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.ranweli.dao.PackageDAO;
 import lk.ijse.ranweli.dto.PackageDto;
 import lk.ijse.ranweli.dto.tm.PackageTm;
-import lk.ijse.ranweli.model.PackageModel;
+import lk.ijse.ranweli.dao.PackageDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class TouristDashboardFormController {
     public Text txtLoggedUserName;
     @FXML
     private HBox imageContainer;
+    PackageDAO packageDAO = new PackageDAOImpl();
 
     private static final String[] IMAGE_URLS = {
             "/assets/images/ranweliAd5.png",
@@ -131,7 +133,7 @@ public class TouristDashboardFormController {
     }
     public void getAllPackages() throws SQLException {
         ObservableList<PackageTm> obList = FXCollections.observableArrayList();
-        List<PackageDto> allPackages = PackageModel.getAllPackages();
+        List<PackageDto> allPackages = packageDAO.getAllPackages();
         for(PackageDto dto: allPackages){
             obList.add(new PackageTm(
                     dto.getPackageId(),

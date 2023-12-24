@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.HotelDto;
@@ -10,8 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelModel {
-    public static boolean saveHotel(HotelDto dto) throws SQLException {
+public class HotelDAOImpl implements HotelDAO{
+    @Override
+    public boolean saveHotel(HotelDto dto) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO hotel VALUES(?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -26,8 +27,8 @@ public class HotelModel {
             return false;
         }
     }
-
-    public static boolean deleteHotel(String hotelId) throws SQLException{
+    @Override
+    public boolean deleteHotel(String hotelId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "DELETE FROM hotel WHERE hotelId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -39,8 +40,8 @@ public class HotelModel {
             return false;
         }
     }
-
-    public static boolean updateHotel(HotelDto dto) throws SQLException{
+    @Override
+    public boolean updateHotel(HotelDto dto) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE hotel SET name = ?, type = ?, status = ? WHERE hotelId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -55,8 +56,8 @@ public class HotelModel {
             return false;
         }
     }
-
-    public static List<HotelDto> getAllHotels() throws SQLException{
+    @Override
+    public List<HotelDto> getAllHotels() throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM hotel";
         PreparedStatement pstm = connection.prepareStatement(sql);

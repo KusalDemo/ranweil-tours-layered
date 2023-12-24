@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.TouristDto;
@@ -8,8 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TouristModel {
-    public static boolean saveTourist(TouristDto dto) throws SQLException {
+public class TouristDAOImpl implements TouristDAO {
+    @Override
+    public boolean saveTourist(TouristDto dto) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql="INSERT INTO tourist VALUES (?,?, AES_ENCRYPT(?, '43ad-8c7a-603b'),?)";
         //String sql = "INSERT INTO tourist VALUES(?,?,?,?)";
@@ -24,7 +25,8 @@ public class TouristModel {
             return false;
         }
     }
-    public static TouristDto getTourist(String id) throws SQLException {
+    @Override
+    public TouristDto getTourist(String id) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql="SELECT identityDetails,name, CONVERT(AES_DECRYPT(password,'43ad-8c7a-603b') USING utf8)AS decrypted_password FROM tourist WHERE identityDetails=?";
         //String sql = "SELECT * FROM tourist WHERE identityDetails=?";
@@ -42,8 +44,8 @@ public class TouristModel {
                 return null;
             }
     }
-
-    public static String getTouristEmailFromId(String id) throws SQLException {
+    @Override
+    public String getTouristEmailFromId(String id) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT email FROM tourist WHERE identityDetails=?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -56,7 +58,8 @@ public class TouristModel {
             return null;
         }
     }
-    public static boolean changePassword(String id, String password) throws SQLException {
+    @Override
+    public boolean changePassword(String id, String password) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE tourist SET password=AES_ENCRYPT(?, '43ad-8c7a-603b') WHERE identityDetails=?";
         PreparedStatement pstm = connection.prepareStatement(sql);

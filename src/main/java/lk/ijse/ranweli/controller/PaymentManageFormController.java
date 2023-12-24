@@ -13,10 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import lk.ijse.ranweli.dao.PaymentDAO;
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.PaymentDto;
 import lk.ijse.ranweli.dto.tm.PaymentTm;
-import lk.ijse.ranweli.model.PaymentModel;
+import lk.ijse.ranweli.dao.PaymentDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -43,6 +44,7 @@ public class PaymentManageFormController {
     public Button btnView;
     public Button btnBack;
     public Button btnReport;
+    PaymentDAO paymentDAO = new PaymentDAOImpl();
 
     public void initialize() throws SQLException {
         setAllPayments();
@@ -60,7 +62,7 @@ public class PaymentManageFormController {
     }
     public void btnViewOnAction(ActionEvent actionEvent) throws SQLException {
         String id= txtPayId.getText();
-        Image receipt = PaymentModel.getReceipt(id);
+        Image receipt = paymentDAO.getReceipt(id);
         try{
             ImageView imageView = new ImageView(receipt);
             //ScrollPane scrollPane = new ScrollPane(imageView);
@@ -86,7 +88,7 @@ public class PaymentManageFormController {
     }
     public void setAllPayments() throws SQLException {
         ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
-        ArrayList<PaymentDto> allPayments = PaymentModel.getAllPayments();
+        ArrayList<PaymentDto> allPayments = paymentDAO.getAllPayments();
 
         for (PaymentDto dto : allPayments){
             obList.add(new PaymentTm(

@@ -13,10 +13,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lk.ijse.ranweli.dao.HotelDAO;
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.HotelDto;
 import lk.ijse.ranweli.dto.tm.HotelTm;
-import lk.ijse.ranweli.model.HotelModel;
+import lk.ijse.ranweli.dao.HotelDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -44,6 +45,8 @@ public class HotelFormController {
     public Button btnReport;
     public Text txtTitle;
 
+    HotelDAO hotelDAO = new HotelDAOImpl();
+
     public void initialize(){
         new FadeInLeft(txtTitle).play();
         loadAllHotels();
@@ -70,7 +73,7 @@ public class HotelFormController {
     private void loadAllHotels(){
         try{
             ObservableList<HotelTm> obList = FXCollections.observableArrayList();
-            List<HotelDto> dtoLIst = HotelModel.getAllHotels();
+            List<HotelDto> dtoLIst = hotelDAO.getAllHotels();
             for(HotelDto dto: dtoLIst){
                 obList.add(new HotelTm(dto.getHotelId(),dto.getHotelName(),dto.getHotelType(),dto.getStatus()));
             }
@@ -107,7 +110,7 @@ public class HotelFormController {
 
         HotelDto dto=new HotelDto(hotelId,hotelName,hotelType,status);
         try {
-            boolean isUpdated= HotelModel.updateHotel(dto);
+            boolean isUpdated= hotelDAO.updateHotel(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                 clearFields();
@@ -136,7 +139,7 @@ public class HotelFormController {
             if (response == buttonTypeYes) {
                 boolean isDeleted = false;
                 try {
-                    isDeleted = HotelModel.deleteHotel(hotelId);
+                    isDeleted = hotelDAO.deleteHotel(hotelId);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -160,7 +163,7 @@ public class HotelFormController {
 
         HotelDto dto=new HotelDto(hotelId,hotelName,hotelType,status);
         try {
-            boolean isSaved = HotelModel.saveHotel(dto);
+            boolean isSaved = hotelDAO.saveHotel(dto);
             if(isSaved){
                 new Alert(Alert.AlertType.INFORMATION, "Save Successful").show();
                 clearFields();

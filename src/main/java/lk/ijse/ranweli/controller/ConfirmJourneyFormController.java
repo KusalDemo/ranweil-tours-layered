@@ -15,7 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.QRScanner;
-import lk.ijse.ranweli.model.PaymentModel;
+import lk.ijse.ranweli.dao.PaymentDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.sql.SQLException;
@@ -93,7 +93,7 @@ public class ConfirmJourneyFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try {
-                    boolean isAvailabilityReset = PaymentModel.resetAvailability(txtSelectedVehicle.getText(), txtSelectedHotel.getText(), txtSelectedGuide.getText(), txtSelectedDriver.getText());
+                    boolean isAvailabilityReset = PaymentDAOImpl.resetAvailability(txtSelectedVehicle.getText(), txtSelectedHotel.getText(), txtSelectedGuide.getText(), txtSelectedDriver.getText());
                     if (isAvailabilityReset) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Journey has been ended successfully                    All Availability has been reset").show();
                         Notifications.create()

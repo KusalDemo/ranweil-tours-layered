@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.PackageDto;
@@ -10,8 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackageModel {
-    public static boolean savePackage(PackageDto dto) throws SQLException  {
+public class PackageDAOImpl implements PackageDAO {
+    public boolean savePackage(PackageDto dto) throws SQLException  {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO package VALUES(?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -27,7 +27,7 @@ public class PackageModel {
         }
     }
 
-    public static boolean deletePackage(String packageId) throws SQLException{
+    public boolean deletePackage(String packageId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "DELETE FROM package WHERE packageId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -39,7 +39,7 @@ public class PackageModel {
             return false;
         }
     }
-    public static boolean updatePackage(PackageDto dto) throws SQLException{
+    public boolean updatePackage(PackageDto dto) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE package SET name = ?, description = ?, price = ? WHERE packageId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -54,7 +54,7 @@ public class PackageModel {
             return false;
         }
     }
-    public static List<PackageDto> getAllPackages() throws SQLException{
+    public List<PackageDto> getAllPackages() throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM package";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -72,7 +72,7 @@ public class PackageModel {
         return list;
 
     }
-    public static PackageDto searchPackage(String packageId) throws SQLException{
+    public PackageDto searchPackage(String packageId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM package WHERE packageId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);

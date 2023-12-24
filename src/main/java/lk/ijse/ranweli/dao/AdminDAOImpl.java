@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.AdminDto;
@@ -8,8 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdminModel {
-    public static AdminDto searchAdmin(String email) throws SQLException {
+public class AdminDAOImpl implements AdminDAO {
+    @Override
+    public  AdminDto searchAdmin(String email) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         //String sql= "SELECT email,userName,CONVERT(AES_DECRYPT(password, '43ad-8c7a-603b') USING utf8) AS decrypted_password,type FROM admin WHERE email = ?";
         String sql = "SELECT * FROM admin WHERE email = ?";
@@ -30,8 +31,8 @@ public class AdminModel {
         return dto;
 
     }
-
-    public static boolean saveAdmin(AdminDto dto) throws SQLException {
+    @Override
+    public  boolean saveAdmin(AdminDto dto) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         //String sql="INSERT INTO admin VALUES (?,?, AES_ENCRYPT(?,'43ad-8c7a-603b'),?)";
         String sql = "INSERT INTO admin VALUES(?,?,?,?)";

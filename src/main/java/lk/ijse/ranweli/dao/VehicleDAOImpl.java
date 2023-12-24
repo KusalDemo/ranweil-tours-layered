@@ -1,4 +1,4 @@
-package lk.ijse.ranweli.model;
+package lk.ijse.ranweli.dao;
 
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.VehicleDto;
@@ -10,8 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleModel {
-    public static boolean saveVehicle(VehicleDto dto) throws SQLException {
+public class VehicleDAOImpl implements VehicleDAO {
+    @Override
+    public boolean saveVehicle(VehicleDto dto) throws SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "INSERT INTO vehicle VALUES(?,?,?,?)";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -26,8 +27,8 @@ public class VehicleModel {
             return false;
         }
     }
-
-    public static boolean deleteVehicle(String vehicleId) throws SQLException{
+    @Override
+    public boolean deleteVehicle(String vehicleId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "DELETE FROM vehicle WHERE vehicleId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -39,8 +40,8 @@ public class VehicleModel {
             return false;
         }
     }
-
-    public static boolean updateVehicle(VehicleDto dto) throws SQLException{
+    @Override
+    public boolean updateVehicle(VehicleDto dto) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "UPDATE vehicle SET status = ?, numberOfSeats = ?, empId = ? WHERE vehicleId = ?";
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -55,8 +56,8 @@ public class VehicleModel {
             return false;
         }
     }
-
-    public static List<VehicleDto> getAllVehicles() throws SQLException{
+    @Override
+    public List<VehicleDto> getAllVehicles() throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         String sql = "SELECT * FROM vehicle";
         PreparedStatement pstm = connection.prepareStatement(sql);
