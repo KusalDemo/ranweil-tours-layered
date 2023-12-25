@@ -4,14 +4,31 @@ import lk.ijse.ranweli.dto.TouristDto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class TouristDAOImpl implements TouristDAO {
     @Override
-    public boolean saveTourist(TouristDto dto) throws SQLException, ClassNotFoundException {
+    public ArrayList<TouristDto> getAll() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean save(TouristDto dto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO tourist VALUES (?,?, AES_ENCRYPT(?, '43ad-8c7a-603b'),?)",dto.getIdentityDetails(),dto.getName(),dto.getPassword(),dto.getEmail());
     }
+
     @Override
-    public TouristDto getTourist(String id) throws SQLException, ClassNotFoundException {
+    public boolean update(TouristDto dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public TouristDto search(String id) throws SQLException, ClassNotFoundException {
         ResultSet rs = SQLUtil.execute("SELECT identityDetails,name, CONVERT(AES_DECRYPT(password,'43ad-8c7a-603b') USING utf8)AS decrypted_password FROM tourist WHERE identityDetails=?",id);
         TouristDto dto = new TouristDto();
             if(rs.next()){

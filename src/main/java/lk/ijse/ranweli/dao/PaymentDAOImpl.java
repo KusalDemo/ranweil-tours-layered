@@ -9,8 +9,23 @@ import java.util.ArrayList;
 
 public class PaymentDAOImpl implements PaymentDAO {
     @Override
-    public boolean savePayment(PaymentDto paymentDto) throws SQLException, ClassNotFoundException {
+    public boolean save(PaymentDto paymentDto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO payment VALUES(?,?,?,?,?,?)",paymentDto.getPayId(),paymentDto.getAmount(),paymentDto.getStatus(),Date.valueOf(paymentDto.getDate()),paymentDto.getMethod(),paymentDto.getReceipt());
+    }
+
+    @Override
+    public boolean update(PaymentDto dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public PaymentDto search(String id) throws SQLException, ClassNotFoundException {
+        return null;
     }
 
     public static boolean updatePayment(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
@@ -120,7 +135,7 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
     }
     @Override
-    public ArrayList<PaymentDto> getAllPayments() throws SQLException, ClassNotFoundException {
+    public ArrayList<PaymentDto> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM payment");
         ArrayList<PaymentDto> paymentDtos = new ArrayList<>();
 

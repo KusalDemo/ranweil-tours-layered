@@ -82,7 +82,7 @@ public class EmployeeFormController {
         ObservableList<EmployeeTm> obList = FXCollections.observableArrayList();
 
         try{
-            List<EmployeeDto> dtoLIst= model.getAllEmployees();
+            List<EmployeeDto> dtoLIst= model.getAll();
             for(EmployeeDto dto: dtoLIst){
                 obList.add(new EmployeeTm(dto.getEmpId(),dto.getEmpName(),dto.getEmpAddress(),dto.getEmpType(),dto.getEmpAvailability(),dto.getEmpSalary()));
             }
@@ -104,7 +104,7 @@ public class EmployeeFormController {
             EmployeeDto dto=new EmployeeDto(employeeId,employeeName,employeeAddress,employeeType,employeeAvailability,employeeSalary);
 
             try {
-                boolean isSaved = employeeDAO.saveEmployee(dto);
+                boolean isSaved = employeeDAO.save(dto);
                 if(isSaved){
                     new Alert(Alert.AlertType.INFORMATION, "Save Successful").show();
                     loadAllEmployess();
@@ -132,7 +132,7 @@ public class EmployeeFormController {
         EmployeeDto dto=new EmployeeDto(employeeId,employeeName,employeeAddress,employeeType,employeeAvailability,employeeSalary);
 
         try {
-            boolean isUpdated= employeeDAO.updateEmployee(dto);
+            boolean isUpdated= employeeDAO.update(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                 clearFields();
@@ -161,7 +161,7 @@ public class EmployeeFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try {
-                    boolean isDeleted = employeeDAO.deleteEmployee(employeeId);
+                    boolean isDeleted = employeeDAO.delete(employeeId);
                     if(isDeleted){
                         new Alert(Alert.AlertType.INFORMATION, "Delete Successful").show();
                         clearFields();

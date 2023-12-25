@@ -78,7 +78,7 @@ public class VehicleFormController {
     private  void loadAllVehicles(){
         try{
             ObservableList<VehicleTm> obList = FXCollections.observableArrayList();
-            List<VehicleDto> dtoLIst = vehicleDAO.getAllVehicles();
+            List<VehicleDto> dtoLIst = vehicleDAO.getAll();
             for(VehicleDto dto: dtoLIst){
                 obList.add(new VehicleTm(dto.getVehicleId(),dto.getStatus(),dto.getNumberOfSeats(),dto.getEmpId()));
             }
@@ -91,7 +91,7 @@ public class VehicleFormController {
     private void loadEmployeeIds(){
         ObservableList<String> obList = FXCollections.observableArrayList();
         try{
-            List<EmployeeDto> dtoLIst = employeeDAO.getAllEmployees();
+            List<EmployeeDto> dtoLIst = employeeDAO.getAll();
             for(EmployeeDto dto: dtoLIst){
                 if((dto.getEmpType().equals("DRIVER"))&&(dto.getEmpAvailability().equals("YES"))){
                     obList.add(dto.getEmpId());
@@ -125,7 +125,7 @@ public class VehicleFormController {
 
         VehicleDto dto=new VehicleDto(vehicleId,status,numberOfSeats,empId);
         try {
-            boolean isSaved = vehicleDAO.saveVehicle(dto);
+            boolean isSaved = vehicleDAO.save(dto);
             if(isSaved){
                 new Alert(Alert.AlertType.INFORMATION, "Save Successful").show();
                 clearFields();
@@ -157,7 +157,7 @@ public class VehicleFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try {
-                    boolean isDeleted = vehicleDAO.deleteVehicle(vehicleId);
+                    boolean isDeleted = vehicleDAO.delete(vehicleId);
                     if(isDeleted){
                         new Alert(Alert.AlertType.INFORMATION, "Delete Successful").show();
                         clearFields();
@@ -182,7 +182,7 @@ public class VehicleFormController {
         VehicleDto dto=new VehicleDto(vehicleId,status,numberOfSeats,empId);
 
         try {
-            boolean isUpdated= vehicleDAO.updateVehicle(dto);
+            boolean isUpdated= vehicleDAO.update(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                 clearFields();

@@ -88,7 +88,7 @@ public class PaymentManageFormController {
     }
     public void setAllPayments() throws SQLException, ClassNotFoundException {
         ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
-        ArrayList<PaymentDto> allPayments = paymentDAO.getAllPayments();
+        ArrayList<PaymentDto> allPayments = paymentDAO.getAll();
 
         for (PaymentDto dto : allPayments){
             obList.add(new PaymentTm(

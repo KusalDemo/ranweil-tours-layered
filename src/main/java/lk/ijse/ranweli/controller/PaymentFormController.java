@@ -105,7 +105,7 @@ public class PaymentFormController {
                 if (response == buttonTypeYes) {
                     try{
                         PaymentDto paymentDto = new PaymentDto(txtId.getText(), Double.parseDouble(txtAmount.getText()), "PAID", date, "ONLINE", imageData);
-                        boolean isSaved = paymentDAO.savePayment(paymentDto);
+                        boolean isSaved = paymentDAO.save(paymentDto);
                         if(isSaved){
                             boolean isTransactionCompleted = PaymentDAOImpl.updatePayment(BookingFormController.selectedVehicleId, BookingFormController.selectedHotelId, BookingFormController.selectedGuideId, BookingFormController.selectedDriverId);
                             new Alert(Alert.AlertType.CONFIRMATION, "Payment Successful").show();

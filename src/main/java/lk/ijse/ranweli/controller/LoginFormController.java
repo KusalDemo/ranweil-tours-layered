@@ -44,7 +44,7 @@ public class LoginFormController {
     public void loginbtnOnAction(ActionEvent actionEvent)   {
         String email = txtUserName.getText();
         try {
-            AdminDto admindto= adminDAO.searchAdmin(email);
+            AdminDto admindto= adminDAO.search(email);
 
             if(admindto != null){
                 if(admindto.getPassword().equals(txtPassword.getText())){

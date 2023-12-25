@@ -47,7 +47,7 @@ public class SignupFormController {
             AdminDto dto =new AdminDto(email,userName,password,role);
 
             try{
-                boolean isSaved = adminDAO.saveAdmin(dto);
+                boolean isSaved = adminDAO.save(dto);
                 if(isSaved){
                     new Alert(Alert.AlertType.INFORMATION, "Sign Up Successful").show();
                 }

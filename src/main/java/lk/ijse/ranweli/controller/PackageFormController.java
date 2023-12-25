@@ -60,7 +60,7 @@ public class PackageFormController {
     public void loadAllPackages(){
         try{
             ObservableList<PackageTm> obList = FXCollections.observableArrayList();
-            List<PackageDto> dtoLIst = packageDAO.getAllPackages();
+            List<PackageDto> dtoLIst = packageDAO.getAll();
             for(PackageDto dto: dtoLIst){
                 obList.add(new PackageTm(dto.getPackageId(),dto.getPackageName(),dto.getDescription(),dto.getPrice()));
             }
@@ -79,7 +79,7 @@ public class PackageFormController {
 
         PackageDto dto = new PackageDto(packageId, packageName, description, price);
         try{
-            if(packageDAO.savePackage(dto)){
+            if(packageDAO.save(dto)){
                 new Alert(Alert.AlertType.INFORMATION, "Package Saved").show();
                 clearFields();
                 loadAllPackages();
@@ -99,7 +99,7 @@ public class PackageFormController {
 
         PackageDto dto = new PackageDto(packageId, packageName, description, price);
         try{
-            if(packageDAO.updatePackage(dto)){
+            if(packageDAO.update(dto)){
                 new Alert(Alert.AlertType.INFORMATION, "Package Updated").show();
                 clearFields();
                 loadAllPackages();
@@ -126,7 +126,7 @@ public class PackageFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try{
-                    if(packageDAO.deletePackage(packageId)){
+                    if(packageDAO.delete(packageId)){
                         new Alert(Alert.AlertType.INFORMATION, "Package Deleted").show();
                         clearFields();
                         loadAllPackages();

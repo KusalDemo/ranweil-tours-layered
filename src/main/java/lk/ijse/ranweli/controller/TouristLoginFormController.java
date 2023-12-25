@@ -52,7 +52,7 @@ public class TouristLoginFormController {
     public void loginBtnOnAction(ActionEvent actionEvent) throws SQLException, IOException, ClassNotFoundException {
         String touristId = txtUserId.getText();
         String password = txtPassword.getText();
-        TouristDto tourist = touristDAO.getTourist(touristId);
+        TouristDto tourist = touristDAO.search(touristId);
         if(tourist!=null && tourist.getPassword().equals(password)){
             loggedUser = txtUserId.getText();
             loggedUserName=tourist.getName();
@@ -118,7 +118,7 @@ public class TouristLoginFormController {
 
     public void txtForgetPasswordOnAction(MouseEvent mouseEvent) throws SQLException, ClassNotFoundException {
         if(!txtUserId.getText().isEmpty()){
-            if(touristDAO.getTourist(txtUserId.getText())!=null) {
+            if(touristDAO.search(txtUserId.getText())!=null) {
                 attemptingUser = txtUserId.getText();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");

@@ -57,7 +57,7 @@ public class TouristSignUpFormController {
                        }else{
                            TouristDto touristDto = new TouristDto(userId, userName, password,email);
                            try {
-                               boolean isSaved = touristDAO.saveTourist(touristDto);
+                               boolean isSaved = touristDAO.save(touristDto);
                                if (isSaved) {
                                    clearFields();
                                    new Alert(Alert.AlertType.INFORMATION, "Sign Up Successful").showAndWait();

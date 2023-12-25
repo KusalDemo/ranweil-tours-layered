@@ -73,7 +73,7 @@ public class HotelFormController {
     private void loadAllHotels(){
         try{
             ObservableList<HotelTm> obList = FXCollections.observableArrayList();
-            List<HotelDto> dtoLIst = hotelDAO.getAllHotels();
+            List<HotelDto> dtoLIst = hotelDAO.getAll();
             for(HotelDto dto: dtoLIst){
                 obList.add(new HotelTm(dto.getHotelId(),dto.getHotelName(),dto.getHotelType(),dto.getStatus()));
             }
@@ -110,7 +110,7 @@ public class HotelFormController {
 
         HotelDto dto=new HotelDto(hotelId,hotelName,hotelType,status);
         try {
-            boolean isUpdated= hotelDAO.updateHotel(dto);
+            boolean isUpdated= hotelDAO.update(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                 clearFields();
@@ -139,7 +139,7 @@ public class HotelFormController {
             if (response == buttonTypeYes) {
                 boolean isDeleted = false;
                 try {
-                    isDeleted = hotelDAO.deleteHotel(hotelId);
+                    isDeleted = hotelDAO.delete(hotelId);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 } catch (ClassNotFoundException e) {
@@ -165,7 +165,7 @@ public class HotelFormController {
 
         HotelDto dto=new HotelDto(hotelId,hotelName,hotelType,status);
         try {
-            boolean isSaved = hotelDAO.saveHotel(dto);
+            boolean isSaved = hotelDAO.save(dto);
             if(isSaved){
                 new Alert(Alert.AlertType.INFORMATION, "Save Successful").show();
                 clearFields();

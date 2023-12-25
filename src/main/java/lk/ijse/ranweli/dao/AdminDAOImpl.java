@@ -4,10 +4,11 @@ import lk.ijse.ranweli.dto.AdminDto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AdminDAOImpl implements AdminDAO {
     @Override
-    public  AdminDto searchAdmin(String email) throws SQLException, ClassNotFoundException {
+    public  AdminDto search(String email) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM admin WHERE email = ?", email);
         AdminDto dto=null;
 
@@ -22,9 +23,25 @@ public class AdminDAOImpl implements AdminDAO {
         return dto;
 
     }
+
     @Override
-    public  boolean saveAdmin(AdminDto dto) throws SQLException, ClassNotFoundException {
+    public ArrayList<AdminDto> getAll() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public  boolean save(AdminDto dto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO admin VALUES(?,?,?,?)",dto.getEmail(),dto.getUserName(),dto.getPassword(),dto.getType());
 
+    }
+
+    @Override
+    public boolean update(AdminDto dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return false;
     }
 }

@@ -122,10 +122,10 @@ public class BookingFormController {
         ObservableList<EmployeeTm> obListGuides = FXCollections.observableArrayList();
         ObservableList<HotelTm> obListHotels = FXCollections.observableArrayList();
         ObservableList<PackageTm> obListPackages = FXCollections.observableArrayList();
-        List<VehicleDto> allVehicles = vehicleDAO.getAllVehicles();
-        List<EmployeeDto> allEmployees = employeeDAO.getAllEmployees();
-        List<HotelDto> allHotels = hotelDAO.getAllHotels();
-        List<PackageDto> allPackages = packageDAO.getAllPackages();
+        List<VehicleDto> allVehicles = vehicleDAO.getAll();
+        List<EmployeeDto> allEmployees = employeeDAO.getAll();
+        List<HotelDto> allHotels = hotelDAO.getAll();
+        List<PackageDto> allPackages = packageDAO.getAll();
 
         for (EmployeeDto dto : allEmployees) {
             if((dto.getEmpType().equals("GUIDE")) && (dto.getEmpAvailability().equals("YES"))){

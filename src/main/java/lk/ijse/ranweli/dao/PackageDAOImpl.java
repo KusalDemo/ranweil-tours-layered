@@ -5,22 +5,23 @@ import lk.ijse.ranweli.dto.PackageDto;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PackageDAOImpl implements PackageDAO {
-    public boolean savePackage(PackageDto dto) throws SQLException, ClassNotFoundException {
+    public boolean save(PackageDto dto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO package VALUES(?,?,?,?)",dto.getPackageId(),dto.getPackageName(),dto.getDescription(),dto.getPrice());
     }
 
-    public boolean deletePackage(String packageId) throws SQLException, ClassNotFoundException {
+    public boolean delete(String packageId) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("DELETE FROM package WHERE packageId = ?",packageId);
     }
-    public boolean updatePackage(PackageDto dto) throws SQLException, ClassNotFoundException {
+
+    public boolean update(PackageDto dto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("UPDATE package SET name = ?, description = ?, price = ? WHERE packageId = ?",dto.getPackageName(),dto.getDescription(),dto.getPrice(),dto.getPackageId());
     }
-    public List<PackageDto> getAllPackages() throws SQLException, ClassNotFoundException {
+
+    public ArrayList<PackageDto> getAll() throws SQLException, ClassNotFoundException {
         ResultSet rst = SQLUtil.execute("SELECT * FROM package");
-        List<PackageDto> list = new ArrayList<>();
+        ArrayList<PackageDto> list = new ArrayList<>();
         while(rst.next()){
             PackageDto dto = new PackageDto();
             dto.setPackageId(rst.getString("packageId"));
@@ -31,7 +32,7 @@ public class PackageDAOImpl implements PackageDAO {
         }
         return list;
     }
-    public PackageDto searchPackage(String packageId) throws SQLException, ClassNotFoundException {
+    public PackageDto search(String packageId) throws SQLException, ClassNotFoundException {
         ResultSet rst = SQLUtil.execute("SELECT * FROM package WHERE packageId = ?",packageId);
         if(rst.next()){
             PackageDto dto = new PackageDto();

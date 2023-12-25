@@ -23,16 +23,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.ranweli.dao.PackageDAO;
+import lk.ijse.ranweli.dao.PackageDAOImpl;
 import lk.ijse.ranweli.dto.PackageDto;
 import lk.ijse.ranweli.dto.tm.PackageTm;
-import lk.ijse.ranweli.dao.PackageDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
 
 public class TouristDashboardFormController {
     public AnchorPane root;
@@ -133,7 +133,7 @@ public class TouristDashboardFormController {
     }
     public void getAllPackages() throws SQLException, ClassNotFoundException {
         ObservableList<PackageTm> obList = FXCollections.observableArrayList();
-        List<PackageDto> allPackages = packageDAO.getAllPackages();
+        ArrayList<PackageDto> allPackages = packageDAO.getAll();
         for(PackageDto dto: allPackages){
             obList.add(new PackageTm(
                     dto.getPackageId(),
