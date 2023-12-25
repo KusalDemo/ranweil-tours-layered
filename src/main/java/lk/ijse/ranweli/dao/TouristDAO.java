@@ -5,9 +5,9 @@ import lk.ijse.ranweli.dto.TouristDto;
 import java.sql.SQLException;
 
 public interface TouristDAO {
-    boolean saveTourist(TouristDto dto) throws SQLException;
-    TouristDto getTourist(String id) throws SQLException;
-    String getTouristEmailFromId(String id) throws SQLException;
-    boolean changePassword(String id, String password) throws SQLException;
+    boolean saveTourist(TouristDto dto) throws SQLException, ClassNotFoundException;
+    TouristDto getTourist(String id) throws SQLException, ClassNotFoundException;
+    String getTouristEmailFromId(String id) throws SQLException, ClassNotFoundException;
+    boolean changePassword(String id, String password) throws SQLException, ClassNotFoundException;
 
 }

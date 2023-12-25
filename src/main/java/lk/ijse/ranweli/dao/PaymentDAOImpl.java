@@ -9,22 +9,8 @@ import java.util.ArrayList;
 
 public class PaymentDAOImpl implements PaymentDAO {
     @Override
-    public boolean savePayment(PaymentDto paymentDto) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "INSERT INTO payment VALUES(?,?,?,?,?,?)";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, paymentDto.getPayId());
-        pstm.setDouble(2, paymentDto.getAmount());
-        pstm.setString(3, paymentDto.getStatus());
-        pstm.setDate(4, Date.valueOf(paymentDto.getDate()));
-        pstm.setString(5, paymentDto.getMethod());
-        pstm.setBytes(6, paymentDto.getReceipt());
-
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean savePayment(PaymentDto paymentDto) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO payment VALUES(?,?,?,?,?,?)",paymentDto.getPayId(),paymentDto.getAmount(),paymentDto.getStatus(),Date.valueOf(paymentDto.getDate()),paymentDto.getMethod(),paymentDto.getReceipt());
     }
 
     public static boolean updatePayment(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
@@ -134,11 +120,8 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
     }
     @Override
-    public ArrayList<PaymentDto> getAllPayments() throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM payment";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet resultSet = pstm.executeQuery();
+    public ArrayList<PaymentDto> getAllPayments() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM payment");
         ArrayList<PaymentDto> paymentDtos = new ArrayList<>();
 
         while(resultSet.next()){
@@ -153,13 +136,8 @@ public class PaymentDAOImpl implements PaymentDAO {
         }return paymentDtos;
     }
     @Override
-    public Image getReceipt(String payId) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "SELECT receipt FROM payment WHERE payId = ?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, payId);
-        ResultSet resultSet = pstm.executeQuery();
-
+    public Image getReceipt(String payId) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT receipt FROM payment WHERE payId = ?", payId);
         if (resultSet.next()) {
             Blob blob = resultSet.getBlob("receipt");
             return new Image(blob.getBinaryStream());

@@ -46,7 +46,7 @@ public class PaymentManageFormController {
     public Button btnReport;
     PaymentDAO paymentDAO = new PaymentDAOImpl();
 
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, ClassNotFoundException {
         setAllPayments();
         setCellValueFactory();
 
@@ -60,7 +60,7 @@ public class PaymentManageFormController {
             }
         });
     }
-    public void btnViewOnAction(ActionEvent actionEvent) throws SQLException {
+    public void btnViewOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String id= txtPayId.getText();
         Image receipt = paymentDAO.getReceipt(id);
         try{
@@ -86,7 +86,7 @@ public class PaymentManageFormController {
     public void clearBtnOnAction(ActionEvent actionEvent) {
         clearFields();
     }
-    public void setAllPayments() throws SQLException {
+    public void setAllPayments() throws SQLException, ClassNotFoundException {
         ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
         ArrayList<PaymentDto> allPayments = paymentDAO.getAllPayments();
 

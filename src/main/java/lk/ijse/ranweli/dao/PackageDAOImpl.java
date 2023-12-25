@@ -1,64 +1,25 @@
 package lk.ijse.ranweli.dao;
 
-import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.PackageDto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PackageDAOImpl implements PackageDAO {
-    public boolean savePackage(PackageDto dto) throws SQLException  {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "INSERT INTO package VALUES(?,?,?,?)";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, dto.getPackageId());
-        pstm.setString(2, dto.getPackageName());
-        pstm.setString(3, dto.getDescription());
-        pstm.setDouble(4, dto.getPrice());
-
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean savePackage(PackageDto dto) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO package VALUES(?,?,?,?)",dto.getPackageId(),dto.getPackageName(),dto.getDescription(),dto.getPrice());
     }
 
-    public boolean deletePackage(String packageId) throws SQLException{
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "DELETE FROM package WHERE packageId = ?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, packageId);
-
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else {
-            return false;
-        }
+    public boolean deletePackage(String packageId) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("DELETE FROM package WHERE packageId = ?",packageId);
     }
-    public boolean updatePackage(PackageDto dto) throws SQLException{
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "UPDATE package SET name = ?, description = ?, price = ? WHERE packageId = ?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, dto.getPackageName());
-        pstm.setString(2, dto.getDescription());
-        pstm.setDouble(3, dto.getPrice());
-        pstm.setString(4, dto.getPackageId());
-
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else {
-            return false;
-        }
+    public boolean updatePackage(PackageDto dto) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("UPDATE package SET name = ?, description = ?, price = ? WHERE packageId = ?",dto.getPackageName(),dto.getDescription(),dto.getPrice(),dto.getPackageId());
     }
-    public List<PackageDto> getAllPackages() throws SQLException{
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM package";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet rst = pstm.executeQuery();
+    public List<PackageDto> getAllPackages() throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute("SELECT * FROM package");
         List<PackageDto> list = new ArrayList<>();
         while(rst.next()){
             PackageDto dto = new PackageDto();
@@ -66,18 +27,12 @@ public class PackageDAOImpl implements PackageDAO {
             dto.setPackageName(rst.getString("name"));
             dto.setDescription(rst.getString("description"));
             dto.setPrice(rst.getDouble("price"));
-            //dto.setPrice(Double.parseDouble(rst.getString("price")));
             list.add(dto);
         }
         return list;
-
     }
-    public PackageDto searchPackage(String packageId) throws SQLException{
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM package WHERE packageId = ?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, packageId);
-        ResultSet rst = pstm.executeQuery();
+    public PackageDto searchPackage(String packageId) throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute("SELECT * FROM package WHERE packageId = ?",packageId);
         if(rst.next()){
             PackageDto dto = new PackageDto();
             dto.setPackageId(rst.getString("packageId"));

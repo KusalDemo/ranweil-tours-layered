@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface PaymentDAO {
-    boolean savePayment(PaymentDto paymentDto) throws SQLException;
-    ArrayList<PaymentDto> getAllPayments() throws SQLException;
-    Image getReceipt(String payId) throws SQLException;
+    boolean savePayment(PaymentDto paymentDto) throws SQLException, ClassNotFoundException;
+    ArrayList<PaymentDto> getAllPayments() throws SQLException, ClassNotFoundException;
+    Image getReceipt(String payId) throws SQLException, ClassNotFoundException;
 
 }

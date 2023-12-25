@@ -49,7 +49,7 @@ public class TouristLoginFormController {
         new SlideInLeft(txtSubText).play();
     }
 
-    public void loginBtnOnAction(ActionEvent actionEvent) throws SQLException, IOException {
+    public void loginBtnOnAction(ActionEvent actionEvent) throws SQLException, IOException, ClassNotFoundException {
         String touristId = txtUserId.getText();
         String password = txtPassword.getText();
         TouristDto tourist = touristDAO.getTourist(touristId);
@@ -116,7 +116,7 @@ public class TouristLoginFormController {
         return password;
     }
 
-    public void txtForgetPasswordOnAction(MouseEvent mouseEvent) throws SQLException {
+    public void txtForgetPasswordOnAction(MouseEvent mouseEvent) throws SQLException, ClassNotFoundException {
         if(!txtUserId.getText().isEmpty()){
             if(touristDAO.getTourist(txtUserId.getText())!=null) {
                 attemptingUser = txtUserId.getText();

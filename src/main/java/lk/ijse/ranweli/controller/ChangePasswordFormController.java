@@ -66,7 +66,7 @@ public class ChangePasswordFormController {
 
     }
 
-    public void btnChangePasswordOnAction(ActionEvent actionEvent) throws SQLException, IOException {
+    public void btnChangePasswordOnAction(ActionEvent actionEvent) throws SQLException, IOException, ClassNotFoundException {
         String password = txtPassword.getText();
         String rePassword = txtRePassword.getText();
         if(password.length()>=8 && password.equals(rePassword)){

@@ -66,7 +66,7 @@ public class BookingFormController {
     PackageDAO packageDAO = new PackageDAOImpl();
     VehicleDAO vehicleDAO=new VehicleDAOImpl();
 
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, ClassNotFoundException {
         loadTableDetails();
         setCellValueFactory();
 
@@ -117,7 +117,7 @@ public class BookingFormController {
         colName.setCellValueFactory(new PropertyValueFactory<>("packageName"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
-    public void loadTableDetails() throws SQLException {
+    public void loadTableDetails() throws SQLException, ClassNotFoundException {
         ObservableList<VehicleTm> obListVehicle = FXCollections.observableArrayList();
         ObservableList<EmployeeTm> obListGuides = FXCollections.observableArrayList();
         ObservableList<HotelTm> obListHotels = FXCollections.observableArrayList();

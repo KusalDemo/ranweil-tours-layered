@@ -1,39 +1,18 @@
 package lk.ijse.ranweli.dao;
 
-import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.TouristDto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TouristDAOImpl implements TouristDAO {
     @Override
-    public boolean saveTourist(TouristDto dto) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql="INSERT INTO tourist VALUES (?,?, AES_ENCRYPT(?, '43ad-8c7a-603b'),?)";
-        //String sql = "INSERT INTO tourist VALUES(?,?,?,?)";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, dto.getIdentityDetails());
-        pstm.setString(2, dto.getName());
-        pstm.setString(3, dto.getPassword());
-        pstm.setString(4, dto.getEmail());
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean saveTourist(TouristDto dto) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO tourist VALUES (?,?, AES_ENCRYPT(?, '43ad-8c7a-603b'),?)",dto.getIdentityDetails(),dto.getName(),dto.getPassword(),dto.getEmail());
     }
     @Override
-    public TouristDto getTourist(String id) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql="SELECT identityDetails,name, CONVERT(AES_DECRYPT(password,'43ad-8c7a-603b') USING utf8)AS decrypted_password FROM tourist WHERE identityDetails=?";
-        //String sql = "SELECT * FROM tourist WHERE identityDetails=?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, id);
-
-        ResultSet rs = pstm.executeQuery();
+    public TouristDto getTourist(String id) throws SQLException, ClassNotFoundException {
+        ResultSet rs = SQLUtil.execute("SELECT identityDetails,name, CONVERT(AES_DECRYPT(password,'43ad-8c7a-603b') USING utf8)AS decrypted_password FROM tourist WHERE identityDetails=?",id);
         TouristDto dto = new TouristDto();
             if(rs.next()){
                 dto.setIdentityDetails(rs.getString("identityDetails"));
@@ -45,13 +24,8 @@ public class TouristDAOImpl implements TouristDAO {
             }
     }
     @Override
-    public String getTouristEmailFromId(String id) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "SELECT email FROM tourist WHERE identityDetails=?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, id);
-
-        ResultSet rs = pstm.executeQuery();
+    public String getTouristEmailFromId(String id) throws SQLException, ClassNotFoundException {
+        ResultSet rs = SQLUtil.execute("SELECT email FROM tourist WHERE identityDetails=?",id);
         if(rs.next()){
             return rs.getString("email");
         }else{
@@ -59,17 +33,8 @@ public class TouristDAOImpl implements TouristDAO {
         }
     }
     @Override
-    public boolean changePassword(String id, String password) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "UPDATE tourist SET password=AES_ENCRYPT(?, '43ad-8c7a-603b') WHERE identityDetails=?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, password);
-        pstm.setString(2, id);
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean changePassword(String id, String password) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("UPDATE tourist SET password=AES_ENCRYPT(?, '43ad-8c7a-603b') WHERE identityDetails=?",password,id);
     }
 
 }

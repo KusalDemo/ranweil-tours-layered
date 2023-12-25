@@ -142,6 +142,8 @@ public class HotelFormController {
                     isDeleted = hotelDAO.deleteHotel(hotelId);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
                 if(isDeleted){
                     new Alert(Alert.AlertType.INFORMATION, "Delete Successful").show();

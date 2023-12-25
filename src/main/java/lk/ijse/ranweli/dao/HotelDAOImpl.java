@@ -1,10 +1,7 @@
 package lk.ijse.ranweli.dao;
 
-import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.HotelDto;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,56 +9,20 @@ import java.util.List;
 
 public class HotelDAOImpl implements HotelDAO{
     @Override
-    public boolean saveHotel(HotelDto dto) throws SQLException {
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "INSERT INTO hotel VALUES(?,?,?,?)";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, dto.getHotelId());
-        pstm.setString(2, dto.getHotelName());
-        pstm.setString(3, dto.getHotelType());
-        pstm.setString(4, dto.getStatus());
-
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean saveHotel(HotelDto dto) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO hotel VALUES(?,?,?,?)",dto.getHotelId(),dto.getHotelName(),dto.getHotelType(),dto.getStatus());
     }
     @Override
-    public boolean deleteHotel(String hotelId) throws SQLException{
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "DELETE FROM hotel WHERE hotelId = ?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, hotelId);
-
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean deleteHotel(String hotelId) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("DELETE FROM hotel WHERE hotelId = ?",hotelId);
     }
     @Override
-    public boolean updateHotel(HotelDto dto) throws SQLException{
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "UPDATE hotel SET name = ?, type = ?, status = ? WHERE hotelId = ?";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1, dto.getHotelName());
-        pstm.setString(2, dto.getHotelType());
-        pstm.setString(3, dto.getStatus());
-        pstm.setString(4, dto.getHotelId());
-
-        if(pstm.executeUpdate()>0){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean updateHotel(HotelDto dto) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("UPDATE hotel SET name = ?, type = ?, status = ? WHERE hotelId = ?",dto.getHotelName(),dto.getHotelType(),dto.getStatus(),dto.getHotelId());
     }
     @Override
-    public List<HotelDto> getAllHotels() throws SQLException{
-        Connection connection = DbConnection.getInstance().getConnection();
-        String sql = "SELECT * FROM hotel";
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        ResultSet rst = pstm.executeQuery();
+    public List<HotelDto> getAllHotels() throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute("SELECT * FROM hotel");
         List<HotelDto> list = new ArrayList<>();
         while (rst.next()){
             list.add(new HotelDto(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4)));

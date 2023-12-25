@@ -66,7 +66,7 @@ public class TouristDashboardFormController {
     private int currentIndex = 0;
 
 
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, ClassNotFoundException {
         new SlideInLeft(txtWelcome).play();
         txtLoggedUserName.setText(TouristLoginFormController.loggedUserName);
         new SlideInLeft(txtLoggedUserName).play();
@@ -131,7 +131,7 @@ public class TouristDashboardFormController {
             }
         });
     }
-    public void getAllPackages() throws SQLException {
+    public void getAllPackages() throws SQLException, ClassNotFoundException {
         ObservableList<PackageTm> obList = FXCollections.observableArrayList();
         List<PackageDto> allPackages = packageDAO.getAllPackages();
         for(PackageDto dto: allPackages){
