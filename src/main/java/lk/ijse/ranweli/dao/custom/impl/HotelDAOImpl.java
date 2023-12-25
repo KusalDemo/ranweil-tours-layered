@@ -1,12 +1,14 @@
-package lk.ijse.ranweli.dao;
+package lk.ijse.ranweli.dao.custom.impl;
 
+import lk.ijse.ranweli.dao.SQLUtil;
+import lk.ijse.ranweli.dao.custom.HotelDAO;
 import lk.ijse.ranweli.dto.HotelDto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class HotelDAOImpl implements HotelDAO{
+public class HotelDAOImpl implements HotelDAO {
     @Override
     public boolean save(HotelDto dto) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("INSERT INTO hotel VALUES(?,?,?,?)",dto.getHotelId(),dto.getHotelName(),dto.getHotelType(),dto.getStatus());

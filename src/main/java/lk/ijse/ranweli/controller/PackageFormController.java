@@ -12,10 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.PackageDAO;
+import lk.ijse.ranweli.dao.custom.PackageDAO;
 import lk.ijse.ranweli.dto.PackageDto;
 import lk.ijse.ranweli.dto.tm.PackageTm;
-import lk.ijse.ranweli.dao.PackageDAOImpl;
+import lk.ijse.ranweli.dao.custom.impl.PackageDAOImpl;
 
 import java.sql.SQLException;
 import java.util.List;

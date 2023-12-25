@@ -15,9 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.Mail;
-import lk.ijse.ranweli.dao.TouristDAO;
+import lk.ijse.ranweli.dao.custom.TouristDAO;
 import lk.ijse.ranweli.dto.TouristDto;
-import lk.ijse.ranweli.dao.TouristDAOImpl;
+import lk.ijse.ranweli.dao.custom.impl.TouristDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;

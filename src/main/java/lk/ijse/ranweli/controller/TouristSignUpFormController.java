@@ -14,9 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.TouristDAO;
+import lk.ijse.ranweli.dao.custom.TouristDAO;
 import lk.ijse.ranweli.dto.TouristDto;
-import lk.ijse.ranweli.dao.TouristDAOImpl;
+import lk.ijse.ranweli.dao.custom.impl.TouristDAOImpl;
 import lk.ijse.ranweli.regex;
 
 public class TouristSignUpFormController {

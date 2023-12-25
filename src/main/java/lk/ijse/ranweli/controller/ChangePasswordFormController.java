@@ -13,8 +13,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.TouristDAO;
-import lk.ijse.ranweli.dao.TouristDAOImpl;
+import lk.ijse.ranweli.dao.custom.TouristDAO;
+import lk.ijse.ranweli.dao.custom.impl.TouristDAOImpl;
 
 import java.io.IOException;
 import java.sql.SQLException;

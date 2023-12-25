@@ -1,5 +1,6 @@
-package lk.ijse.ranweli.dao;
+package lk.ijse.ranweli.dao.custom;
 
+import lk.ijse.ranweli.dao.CrudDAO;
 import lk.ijse.ranweli.dto.EmployeeDto;
 
 public interface EmployeeDAO extends CrudDAO<EmployeeDto> {

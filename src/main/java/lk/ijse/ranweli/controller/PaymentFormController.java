@@ -16,11 +16,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.Mail;
 import lk.ijse.ranweli.QRGenerator;
-import lk.ijse.ranweli.dao.PaymentDAO;
-import lk.ijse.ranweli.dao.TouristDAO;
+import lk.ijse.ranweli.dao.custom.PaymentDAO;
+import lk.ijse.ranweli.dao.custom.TouristDAO;
 import lk.ijse.ranweli.dto.PaymentDto;
-import lk.ijse.ranweli.dao.PaymentDAOImpl;
-import lk.ijse.ranweli.dao.TouristDAOImpl;
+import lk.ijse.ranweli.dao.custom.impl.PaymentDAOImpl;
+import lk.ijse.ranweli.dao.custom.impl.TouristDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -107,7 +107,7 @@ public class PaymentFormController {
                         PaymentDto paymentDto = new PaymentDto(txtId.getText(), Double.parseDouble(txtAmount.getText()), "PAID", date, "ONLINE", imageData);
                         boolean isSaved = paymentDAO.save(paymentDto);
                         if(isSaved){
-                            boolean isTransactionCompleted = PaymentDAOImpl.updatePayment(BookingFormController.selectedVehicleId, BookingFormController.selectedHotelId, BookingFormController.selectedGuideId, BookingFormController.selectedDriverId);
+                            boolean isTransactionCompleted = paymentDAO.update(BookingFormController.selectedVehicleId, BookingFormController.selectedHotelId, BookingFormController.selectedGuideId, BookingFormController.selectedDriverId);
                             new Alert(Alert.AlertType.CONFIRMATION, "Payment Successful").show();
                             if (isTransactionCompleted){
                                 System.out.println("Transaction Completed");

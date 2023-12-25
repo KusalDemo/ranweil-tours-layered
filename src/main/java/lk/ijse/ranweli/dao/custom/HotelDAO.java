@@ -1,5 +1,6 @@
-package lk.ijse.ranweli.dao;
+package lk.ijse.ranweli.dao.custom;
 
+import lk.ijse.ranweli.dao.CrudDAO;
 import lk.ijse.ranweli.dto.HotelDto;
 
 public interface HotelDAO extends CrudDAO<HotelDto> {

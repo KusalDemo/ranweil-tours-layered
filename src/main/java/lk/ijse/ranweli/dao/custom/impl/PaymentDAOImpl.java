@@ -1,6 +1,8 @@
-package lk.ijse.ranweli.dao;
+package lk.ijse.ranweli.dao.custom.impl;
 
 import javafx.scene.image.Image;
+import lk.ijse.ranweli.dao.SQLUtil;
+import lk.ijse.ranweli.dao.custom.PaymentDAO;
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.PaymentDto;
 
@@ -27,30 +29,17 @@ public class PaymentDAOImpl implements PaymentDAO {
     public PaymentDto search(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
-
-    public static boolean updatePayment(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
+    @Override
+    public boolean update(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         try{
-            connection.setAutoCommit(false);
-            String sql="UPDATE vehicle SET status = 'NO' WHERE vehicleId = ?";
-            PreparedStatement pstm=connection.prepareStatement(sql);
-            pstm.setString(1,vehicleId);
-            int isVehicleUpdated = pstm.executeUpdate();
+            int isVehicleUpdated = SQLUtil.execute("UPDATE vehicle SET status = 'NO' WHERE vehicleId = ?",vehicleId);
 
-            String sql1="UPDATE hotel SET status = 'NO' WHERE hotelId = ?";
-            PreparedStatement pstm1=connection.prepareStatement(sql1);
-            pstm1.setString(1,hotelId);
-            int isHotelUpdated = pstm1.executeUpdate();
+            int isHotelUpdated =SQLUtil.execute("UPDATE hotel SET status = 'NO' WHERE hotelId = ?",hotelId);
 
-            String sql2="UPDATE employee SET availability = 'NO' WHERE empId = ?";
-            PreparedStatement pstm2=connection.prepareStatement(sql2);
-            pstm2.setString(1,guideId);
-            int isGuideUpdated = pstm2.executeUpdate();
+            int isGuideUpdated =SQLUtil.execute("UPDATE employee SET availability = 'NO' WHERE empId = ?",guideId);
 
-            String sql3="UPDATE employee SET availability = 'NO' WHERE empId = ?";
-            PreparedStatement pstm3=connection.prepareStatement(sql3);
-            pstm3.setString(1,driverId);
-            int isDriverUpdated = pstm3.executeUpdate();
+            int isDriverUpdated =SQLUtil.execute("UPDATE employee SET availability = 'NO' WHERE empId = ?",driverId);
 
             if((isVehicleUpdated>0) &&(isHotelUpdated>0) &&(isGuideUpdated>0) &&(isDriverUpdated>0)){
                 connection.commit();
@@ -66,21 +55,15 @@ public class PaymentDAOImpl implements PaymentDAO {
             connection.setAutoCommit(true);
         }
     }
-    public static boolean resetAvailability() throws SQLException{
+    @Override
+    public boolean resetAvailability() throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         try{
-            connection.setAutoCommit(false);
-            String sql="UPDATE employee SET status = 'YES' WHERE status = 'NO'";
-            PreparedStatement pstm=connection.prepareStatement(sql);
-            int isVehicleUpdated = pstm.executeUpdate();
+            int isVehicleUpdated =SQLUtil.execute("UPDATE employee SET status = 'YES' WHERE status = 'NO'");
 
-            String sql1="UPDATE hotel SET status = 'YES' WHERE status = 'NO'";
-            PreparedStatement pstm1=connection.prepareStatement(sql1);
-            int isHotelUpdated = pstm1.executeUpdate();
+            int isHotelUpdated =SQLUtil.execute("UPDATE hotel SET status = 'YES' WHERE status = 'NO'");
 
-            String sql2="UPDATE employee SET availability = 'YES' WHERE availability = 'NO'";
-            PreparedStatement pstm2=connection.prepareStatement(sql2);
-            int isEmployeeUpdated = pstm2.executeUpdate();
+            int isEmployeeUpdated =SQLUtil.execute("UPDATE employee SET availability = 'YES' WHERE availability = 'NO'");
 
             if((isVehicleUpdated>0) &&(isHotelUpdated>0) &&(isEmployeeUpdated>0)){
                 connection.commit();
@@ -96,29 +79,17 @@ public class PaymentDAOImpl implements PaymentDAO {
             connection.setAutoCommit(true);
         }
     }
-    public static boolean resetAvailability(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
+    @Override
+    public boolean resetAvailability(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         try{
-            connection.setAutoCommit(false);
-            String sql="UPDATE vehicle SET status = 'YES' WHERE vehicleId = ?";
-            PreparedStatement pstm=connection.prepareStatement(sql);
-            pstm.setString(1,vehicleId);
-            int isVehicleUpdated = pstm.executeUpdate();
+            int isVehicleUpdated =SQLUtil.execute("UPDATE vehicle SET status = 'YES' WHERE vehicleId = ?",vehicleId);
 
-            String sql1="UPDATE hotel SET status = 'YES' WHERE hotelId = ?";
-            PreparedStatement pstm1=connection.prepareStatement(sql1);
-            pstm1.setString(1,hotelId);
-            int isHotelUpdated = pstm1.executeUpdate();
+            int isHotelUpdated =SQLUtil.execute("UPDATE hotel SET status = 'YES' WHERE hotelId = ?",hotelId);
 
-            String sql2="UPDATE employee SET availability = 'YES' WHERE empId = ?";
-            PreparedStatement pstm2=connection.prepareStatement(sql2);
-            pstm2.setString(1,guideId);
-            int isGuideUpdated = pstm2.executeUpdate();
+            int isGuideUpdated =SQLUtil.execute("UPDATE employee SET availability = 'YES' WHERE empId = ?",guideId);
 
-            String sql3="UPDATE employee SET availability = 'YES' WHERE empId = ?";
-            PreparedStatement pstm3=connection.prepareStatement(sql3);
-            pstm3.setString(1,driverId);
-            int isDriverUpdated = pstm3.executeUpdate();
+            int isDriverUpdated =SQLUtil.execute("UPDATE employee SET availability = 'YES' WHERE empId = ?",driverId);
 
             if((isVehicleUpdated>0) &&(isHotelUpdated>0) &&(isGuideUpdated>0) &&(isDriverUpdated>0)){
                 connection.commit();

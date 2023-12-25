@@ -13,6 +13,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lk.ijse.ranweli.dao.custom.*;
+import lk.ijse.ranweli.dao.custom.impl.*;
 import lk.ijse.ranweli.dto.EmployeeDto;
 import lk.ijse.ranweli.dto.HotelDto;
 import lk.ijse.ranweli.dto.PackageDto;
@@ -21,7 +23,6 @@ import lk.ijse.ranweli.dto.tm.EmployeeTm;
 import lk.ijse.ranweli.dto.tm.HotelTm;
 import lk.ijse.ranweli.dto.tm.PackageTm;
 import lk.ijse.ranweli.dto.tm.VehicleTm;
-import lk.ijse.ranweli.dao.*;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -183,7 +184,7 @@ public class BookingFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try{
-                    boolean isBookingTempUpdated = bookingDAO.saveBooking(selectedHotelId, selectedPackageId, selectedVehicleId);
+                    boolean isBookingTempUpdated = bookingDAO.save(selectedHotelId, selectedPackageId, selectedVehicleId);
                     if(isBookingTempUpdated){
                         System.out.println("Temparory Updated");
                     }

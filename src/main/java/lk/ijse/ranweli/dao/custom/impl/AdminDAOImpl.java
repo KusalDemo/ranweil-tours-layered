@@ -1,5 +1,7 @@
-package lk.ijse.ranweli.dao;
+package lk.ijse.ranweli.dao.custom.impl;
 
+import lk.ijse.ranweli.dao.SQLUtil;
+import lk.ijse.ranweli.dao.custom.AdminDAO;
 import lk.ijse.ranweli.dto.AdminDto;
 
 import java.sql.ResultSet;

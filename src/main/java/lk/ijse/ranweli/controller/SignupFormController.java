@@ -17,9 +17,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import lk.ijse.ranweli.dao.AdminDAO;
+import lk.ijse.ranweli.dao.custom.AdminDAO;
 import lk.ijse.ranweli.dto.AdminDto;
-import lk.ijse.ranweli.dao.AdminDAOImpl;
+import lk.ijse.ranweli.dao.custom.impl.AdminDAOImpl;
 
 import java.io.IOException;
 
