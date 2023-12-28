@@ -18,18 +18,17 @@ import lk.ijse.ranweli.Mail;
 import lk.ijse.ranweli.QRGenerator;
 import lk.ijse.ranweli.bo.BOFactory;
 import lk.ijse.ranweli.bo.custom.PaymentBo;
+import lk.ijse.ranweli.bo.custom.ReportBO;
 import lk.ijse.ranweli.bo.custom.TouristBo;
 import lk.ijse.ranweli.dto.PaymentDto;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.controlsfx.control.Notifications;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -54,6 +53,7 @@ public class PaymentFormController {
     public Text txtPayment;
     PaymentBo paymentBo = (PaymentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PAYMENT);
     TouristBo touristBo = (TouristBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.TOURIST);
+    ReportBO reportBo = (ReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.REPORT);
 
 
     public void initialize(){
@@ -214,15 +214,7 @@ public class PaymentFormController {
             hashMap.put("method", method);
 
             try{
-                InputStream resourceAsStream = getClass().getResourceAsStream("/report/paymentReceipt.jrxml");
-                JasperDesign load = JRXmlLoader.load(resourceAsStream);
-                JasperReport jasperReport = JasperCompileManager.compileReport(load);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(
-                        jasperReport,
-                        hashMap,
-                        new JREmptyDataSource()
-                );
-                JasperViewer.viewReport(jasperPrint, false);
+                JasperPrint jasperPrint = reportBo.paymentReceipt(hashMap);
 
                 String filePath = "/home/kitty/Documents/ProjectRanweliPaymentSlipsDoc/"+paymentId+".pdf";
                 JasperExportManager.exportReportToPdfFile(jasperPrint,filePath);
@@ -249,7 +241,7 @@ public class PaymentFormController {
         start(new Stage());
     }
 
-    private byte[] exportJasperPrintToPDF(JasperPrint jasperPrint) throws JRException {
+    /*private byte[] exportJasperPrintToPDF(JasperPrint jasperPrint) throws JRException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         // Export to PDF
@@ -259,5 +251,5 @@ public class PaymentFormController {
         exporter.exportReport();
 
         return byteArrayOutputStream.toByteArray();
-    }
+    }*/
 }

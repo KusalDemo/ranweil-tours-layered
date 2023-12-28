@@ -15,16 +15,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lk.ijse.ranweli.bo.BOFactory;
 import lk.ijse.ranweli.bo.custom.PaymentBo;
-import lk.ijse.ranweli.db.DbConnection;
+import lk.ijse.ranweli.bo.custom.ReportBO;
 import lk.ijse.ranweli.dto.PaymentDto;
 import lk.ijse.ranweli.dto.tm.PaymentTm;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -45,6 +41,7 @@ public class PaymentManageFormController {
     public Button btnBack;
     public Button btnReport;
     PaymentBo paymentBo = (PaymentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PAYMENT);
+    ReportBO reportBO = (ReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.REPORT);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         setAllPayments();
@@ -131,14 +128,7 @@ public class PaymentManageFormController {
     }
 
     public void btnReportOnAction(ActionEvent actionEvent) throws JRException, SQLException {
-        InputStream resourceAsStream = getClass().getResourceAsStream("/report/paymentReport.jrxml");
-        JasperDesign load = JRXmlLoader.load(resourceAsStream);
-        JasperReport jasperReport = JasperCompileManager.compileReport(load);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(
-                jasperReport,
-                null,
-                DbConnection.getInstance().getConnection());
-        JasperViewer.viewReport(jasperPrint, false);
+        reportBO.paymentReport();
     }
 
 }

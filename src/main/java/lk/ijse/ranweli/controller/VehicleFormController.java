@@ -15,17 +15,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.bo.BOFactory;
 import lk.ijse.ranweli.bo.custom.EmployeeBo;
+import lk.ijse.ranweli.bo.custom.ReportBO;
 import lk.ijse.ranweli.bo.custom.VehicleBo;
-import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.EmployeeDto;
 import lk.ijse.ranweli.dto.VehicleDto;
 import lk.ijse.ranweli.dto.tm.VehicleTm;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.JRException;
 
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +45,7 @@ public class VehicleFormController {
 
     EmployeeBo employeeBo = (EmployeeBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.EMPLOYEE);
     VehicleBo vehicleBo = (VehicleBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.VEHICLE);
+    ReportBO reportBo = (ReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.REPORT);
 
 
     public void initialize(){
@@ -216,13 +213,6 @@ public class VehicleFormController {
     }
 
     public void btnReportOnAction(ActionEvent actionEvent) throws JRException, SQLException {
-        InputStream resourceAsStream = getClass().getResourceAsStream("/report/vehicleReport.jrxml");
-        JasperDesign load = JRXmlLoader.load(resourceAsStream);
-        JasperReport jasperReport = JasperCompileManager.compileReport(load);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(
-                jasperReport,
-                null,
-                DbConnection.getInstance().getConnection());
-        JasperViewer.viewReport(jasperPrint, false);
+        reportBo.vehicleReport();
     }
 }

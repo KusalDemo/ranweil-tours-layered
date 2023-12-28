@@ -15,15 +15,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.bo.BOFactory;
 import lk.ijse.ranweli.bo.custom.HotelBo;
-import lk.ijse.ranweli.db.DbConnection;
+import lk.ijse.ranweli.bo.custom.ReportBO;
 import lk.ijse.ranweli.dto.HotelDto;
 import lk.ijse.ranweli.dto.tm.HotelTm;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.JRException;
 
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +41,7 @@ public class HotelFormController {
     public Button btnReport;
     public Text txtTitle;
     HotelBo hotelBo = (HotelBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.HOTEL);
+    ReportBO reportBo = (ReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.REPORT);
 
     public void initialize(){
         new FadeInLeft(txtTitle).play();
@@ -198,13 +195,6 @@ public class HotelFormController {
     }
 
     public void btnReportOnAction(ActionEvent actionEvent) throws JRException, SQLException {
-        InputStream resourceAsStream = getClass().getResourceAsStream("/report/hotelReport.jrxml");
-        JasperDesign load = JRXmlLoader.load(resourceAsStream);
-        JasperReport jasperReport = JasperCompileManager.compileReport(load);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(
-                jasperReport,
-                null,
-                DbConnection.getInstance().getConnection());
-        JasperViewer.viewReport(jasperPrint, false);
+        reportBo.hotelReport();
     }
 }

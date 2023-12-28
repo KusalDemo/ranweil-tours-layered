@@ -10,9 +10,9 @@ public class BOFactory {
         return boFactory ==null ? boFactory = new BOFactory(): boFactory;
     }
     public enum BOType{
-        EMPLOYEE, HOTEL, VEHICLE, PAYMENT, ADMIN, PACKAGE ,TOURIST
+        EMPLOYEE, HOTEL, VEHICLE, PAYMENT, ADMIN, PACKAGE ,TOURIST,REPORT
     }
-    public Object getBO(BOType boType){
+    public SuperBO getBO(BOType boType){
         switch (boType){
             case EMPLOYEE:
                 return new EmployeeBoImpl();
@@ -28,6 +28,8 @@ public class BOFactory {
                 return new PackageBoImpl();
             case TOURIST:
                 return new TouristBoImpl();
+            case REPORT:
+                return new ReportBOImpl();
             default:
                 return null;
         }

@@ -15,15 +15,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.bo.BOFactory;
 import lk.ijse.ranweli.bo.custom.EmployeeBo;
-import lk.ijse.ranweli.db.DbConnection;
+import lk.ijse.ranweli.bo.custom.ReportBO;
 import lk.ijse.ranweli.dto.EmployeeDto;
 import lk.ijse.ranweli.dto.tm.EmployeeTm;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.JRException;
 
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +45,7 @@ public class EmployeeFormController {
     public Button btnReport;
     public Text txtTitle;
     EmployeeBo employeeBo= (EmployeeBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.EMPLOYEE);
+    ReportBO reportBo = (ReportBO) BOFactory.getBoFactory().getBO(BOFactory.BOType.REPORT);
 
     public void initialize(){
         new FadeInLeft(txtTitle).play();
@@ -216,13 +213,6 @@ public class EmployeeFormController {
     }
 
     public void btnReportOnAction(ActionEvent actionEvent) throws JRException, SQLException {
-        InputStream resourceAsStream = getClass().getResourceAsStream("/report/employeeReport.jrxml");
-        JasperDesign load = JRXmlLoader.load(resourceAsStream);
-        JasperReport jasperReport = JasperCompileManager.compileReport(load);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(
-                jasperReport,
-                null,
-                DbConnection.getInstance().getConnection());
-        JasperViewer.viewReport(jasperPrint, false);
+        reportBo.employeeReport();
     }
 }
