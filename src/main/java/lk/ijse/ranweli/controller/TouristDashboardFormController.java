@@ -22,8 +22,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lk.ijse.ranweli.dao.custom.PackageDAO;
-import lk.ijse.ranweli.dao.custom.impl.PackageDAOImpl;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.PackageBo;
 import lk.ijse.ranweli.dto.PackageDto;
 import lk.ijse.ranweli.dto.tm.PackageTm;
 import org.controlsfx.control.Notifications;
@@ -50,7 +50,7 @@ public class TouristDashboardFormController {
     public Text txtLoggedUserName;
     @FXML
     private HBox imageContainer;
-    PackageDAO packageDAO = new PackageDAOImpl();
+    PackageBo packageBo = (PackageBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PACKAGE);
 
     private static final String[] IMAGE_URLS = {
             "/assets/images/ranweliAd5.png",
@@ -133,7 +133,7 @@ public class TouristDashboardFormController {
     }
     public void getAllPackages() throws SQLException, ClassNotFoundException {
         ObservableList<PackageTm> obList = FXCollections.observableArrayList();
-        ArrayList<PackageDto> allPackages = packageDAO.getAll();
+        ArrayList<PackageDto> allPackages = packageBo.getAllPackages();
         for(PackageDto dto: allPackages){
             obList.add(new PackageTm(
                     dto.getPackageId(),

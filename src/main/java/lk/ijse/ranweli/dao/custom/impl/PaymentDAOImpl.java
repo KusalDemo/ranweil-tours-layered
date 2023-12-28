@@ -3,20 +3,22 @@ package lk.ijse.ranweli.dao.custom.impl;
 import javafx.scene.image.Image;
 import lk.ijse.ranweli.dao.SQLUtil;
 import lk.ijse.ranweli.dao.custom.PaymentDAO;
-import lk.ijse.ranweli.db.DbConnection;
-import lk.ijse.ranweli.dto.PaymentDto;
+import lk.ijse.ranweli.entity.Payment;
 
-import java.sql.*;
+import java.sql.Blob;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PaymentDAOImpl implements PaymentDAO {
     @Override
-    public boolean save(PaymentDto paymentDto) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO payment VALUES(?,?,?,?,?,?)",paymentDto.getPayId(),paymentDto.getAmount(),paymentDto.getStatus(),Date.valueOf(paymentDto.getDate()),paymentDto.getMethod(),paymentDto.getReceipt());
+    public boolean save(Payment payment) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO payment VALUES(?,?,?,?,?,?)",payment.getPayId(),payment.getAmount(),payment.getStatus(),Date.valueOf(payment.getDate()),payment.getMethod(),payment.getReceipt());
     }
 
     @Override
-    public boolean update(PaymentDto dto) throws SQLException, ClassNotFoundException {
+    public boolean update(Payment entity) throws SQLException, ClassNotFoundException {
         return false;
     }
 
@@ -26,10 +28,10 @@ public class PaymentDAOImpl implements PaymentDAO {
     }
 
     @Override
-    public PaymentDto search(String id) throws SQLException, ClassNotFoundException {
+    public Payment search(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
-    @Override
+    /*@Override
     public boolean update(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         try{
@@ -54,8 +56,8 @@ public class PaymentDAOImpl implements PaymentDAO {
         }finally {
             connection.setAutoCommit(true);
         }
-    }
-    @Override
+    }*/
+    /*@Override
     public boolean resetAvailability() throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         try{
@@ -78,8 +80,8 @@ public class PaymentDAOImpl implements PaymentDAO {
         }finally {
             connection.setAutoCommit(true);
         }
-    }
-    @Override
+    }*/
+    /*@Override
     public boolean resetAvailability(String vehicleId,String hotelId,String guideId,String driverId) throws SQLException{
         Connection connection = DbConnection.getInstance().getConnection();
         try{
@@ -104,14 +106,14 @@ public class PaymentDAOImpl implements PaymentDAO {
         }finally {
             connection.setAutoCommit(true);
         }
-    }
+    }*/
     @Override
-    public ArrayList<PaymentDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Payment> getAll() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM payment");
-        ArrayList<PaymentDto> paymentDtos = new ArrayList<>();
+        ArrayList<Payment> payments = new ArrayList<>();
 
         while(resultSet.next()){
-            paymentDtos.add(new PaymentDto(
+            payments.add(new Payment(
                     resultSet.getString(1),
                     resultSet.getDouble(2),
                     resultSet.getString(3),
@@ -119,7 +121,7 @@ public class PaymentDAOImpl implements PaymentDAO {
                     resultSet.getString(5),
                     resultSet.getBytes(6)
             ));
-        }return paymentDtos;
+        }return payments;
     }
     @Override
     public Image getReceipt(String payId) throws SQLException, ClassNotFoundException {

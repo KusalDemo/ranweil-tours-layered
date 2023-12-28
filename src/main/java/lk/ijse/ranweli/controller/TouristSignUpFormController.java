@@ -14,9 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.custom.TouristDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.TouristBo;
 import lk.ijse.ranweli.dto.TouristDto;
-import lk.ijse.ranweli.dao.custom.impl.TouristDAOImpl;
 import lk.ijse.ranweli.regex;
 
 public class TouristSignUpFormController {
@@ -30,7 +30,7 @@ public class TouristSignUpFormController {
     public TextField txtRePassword;
     public Text txtSubText;
     public TextField txtEmail;
-    TouristDAO touristDAO = new TouristDAOImpl();
+    TouristBo touristBo = (TouristBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.TOURIST);
 
     public void initialize() {
         new SlideInLeft(txtSubText).play();
@@ -57,7 +57,7 @@ public class TouristSignUpFormController {
                        }else{
                            TouristDto touristDto = new TouristDto(userId, userName, password,email);
                            try {
-                               boolean isSaved = touristDAO.save(touristDto);
+                               boolean isSaved = touristBo.saveTourist(touristDto);
                                if (isSaved) {
                                    clearFields();
                                    new Alert(Alert.AlertType.INFORMATION, "Sign Up Successful").showAndWait();

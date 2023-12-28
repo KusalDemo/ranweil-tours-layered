@@ -2,7 +2,7 @@ package lk.ijse.ranweli.dao.custom.impl;
 
 import lk.ijse.ranweli.dao.SQLUtil;
 import lk.ijse.ranweli.dao.custom.AdminDAO;
-import lk.ijse.ranweli.dto.AdminDto;
+import lk.ijse.ranweli.entity.Admin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,35 +10,35 @@ import java.util.ArrayList;
 
 public class AdminDAOImpl implements AdminDAO {
     @Override
-    public  AdminDto search(String email) throws SQLException, ClassNotFoundException {
+    public Admin search(String email) throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM admin WHERE email = ?", email);
-        AdminDto dto=null;
+        Admin admin=null;
 
         if(resultSet.next()){
-            dto = new AdminDto(
+            admin = new Admin(
                     resultSet.getString(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4)
             );
         }
-        return dto;
+        return admin;
 
     }
 
     @Override
-    public ArrayList<AdminDto> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Admin> getAll() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public  boolean save(AdminDto dto) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO admin VALUES(?,?,?,?)",dto.getEmail(),dto.getUserName(),dto.getPassword(),dto.getType());
+    public  boolean save(Admin admin) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO admin VALUES(?,?,?,?)",admin.getEmail(),admin.getUserName(),admin.getPassword(),admin.getType());
 
     }
 
     @Override
-    public boolean update(AdminDto dto) throws SQLException, ClassNotFoundException {
+    public boolean update(Admin admin) throws SQLException, ClassNotFoundException {
         return false;
     }
 

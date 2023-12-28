@@ -13,14 +13,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.custom.EmployeeDAO;
-import lk.ijse.ranweli.dao.custom.VehicleDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.EmployeeBo;
+import lk.ijse.ranweli.bo.custom.VehicleBo;
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.EmployeeDto;
 import lk.ijse.ranweli.dto.VehicleDto;
 import lk.ijse.ranweli.dto.tm.VehicleTm;
-import lk.ijse.ranweli.dao.custom.impl.EmployeeDAOImpl;
-import lk.ijse.ranweli.dao.custom.impl.VehicleDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -48,8 +47,8 @@ public class VehicleFormController {
     public Button btnReport;
     public Text txtVehicle;
 
-    EmployeeDAO employeeDAO=new EmployeeDAOImpl();
-    VehicleDAO vehicleDAO=new VehicleDAOImpl();
+    EmployeeBo employeeBo = (EmployeeBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.EMPLOYEE);
+    VehicleBo vehicleBo = (VehicleBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.VEHICLE);
 
 
     public void initialize(){
@@ -78,7 +77,7 @@ public class VehicleFormController {
     private  void loadAllVehicles(){
         try{
             ObservableList<VehicleTm> obList = FXCollections.observableArrayList();
-            List<VehicleDto> dtoLIst = vehicleDAO.getAll();
+            List<VehicleDto> dtoLIst = vehicleBo.getAllVehicles();
             for(VehicleDto dto: dtoLIst){
                 obList.add(new VehicleTm(dto.getVehicleId(),dto.getStatus(),dto.getNumberOfSeats(),dto.getEmpId()));
             }
@@ -91,7 +90,7 @@ public class VehicleFormController {
     private void loadEmployeeIds(){
         ObservableList<String> obList = FXCollections.observableArrayList();
         try{
-            List<EmployeeDto> dtoLIst = employeeDAO.getAll();
+            List<EmployeeDto> dtoLIst = employeeBo.getAllEmployees();
             for(EmployeeDto dto: dtoLIst){
                 if((dto.getEmpType().equals("DRIVER"))&&(dto.getEmpAvailability().equals("YES"))){
                     obList.add(dto.getEmpId());
@@ -125,7 +124,7 @@ public class VehicleFormController {
 
         VehicleDto dto=new VehicleDto(vehicleId,status,numberOfSeats,empId);
         try {
-            boolean isSaved = vehicleDAO.save(dto);
+            boolean isSaved = vehicleBo.saveVehicle(dto);
             if(isSaved){
                 new Alert(Alert.AlertType.INFORMATION, "Save Successful").show();
                 clearFields();
@@ -157,7 +156,7 @@ public class VehicleFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try {
-                    boolean isDeleted = vehicleDAO.delete(vehicleId);
+                    boolean isDeleted = vehicleBo.deleteVehicle(vehicleId);
                     if(isDeleted){
                         new Alert(Alert.AlertType.INFORMATION, "Delete Successful").show();
                         clearFields();
@@ -182,7 +181,7 @@ public class VehicleFormController {
         VehicleDto dto=new VehicleDto(vehicleId,status,numberOfSeats,empId);
 
         try {
-            boolean isUpdated= vehicleDAO.update(dto);
+            boolean isUpdated= vehicleBo.updateVehicle(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                 clearFields();

@@ -13,11 +13,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.custom.EmployeeDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.EmployeeBo;
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.EmployeeDto;
 import lk.ijse.ranweli.dto.tm.EmployeeTm;
-import lk.ijse.ranweli.dao.custom.impl.EmployeeDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -48,8 +48,7 @@ public class EmployeeFormController {
     public Button btnBack;
     public Button btnReport;
     public Text txtTitle;
-
-    EmployeeDAO employeeDAO=new EmployeeDAOImpl();
+    EmployeeBo employeeBo= (EmployeeBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.EMPLOYEE);
 
     public void initialize(){
         new FadeInLeft(txtTitle).play();
@@ -78,13 +77,12 @@ public class EmployeeFormController {
     }
 
     private void loadAllEmployess(){
-        EmployeeDAOImpl model=new EmployeeDAOImpl();
         ObservableList<EmployeeTm> obList = FXCollections.observableArrayList();
 
         try{
-            List<EmployeeDto> dtoLIst= model.getAll();
-            for(EmployeeDto dto: dtoLIst){
-                obList.add(new EmployeeTm(dto.getEmpId(),dto.getEmpName(),dto.getEmpAddress(),dto.getEmpType(),dto.getEmpAvailability(),dto.getEmpSalary()));
+            List<EmployeeDto> dtoLIst=employeeBo.getAllEmployees();
+            for(EmployeeDto employeeDto: dtoLIst){
+                obList.add(new EmployeeTm(employeeDto.getEmpId(),employeeDto.getEmpName(),employeeDto.getEmpAddress(),employeeDto.getEmpType(),employeeDto.getEmpAvailability(),employeeDto.getEmpSalary()));
             }
             tblEmployee.setItems(obList);
             tblEmployee.refresh();
@@ -104,7 +102,7 @@ public class EmployeeFormController {
             EmployeeDto dto=new EmployeeDto(employeeId,employeeName,employeeAddress,employeeType,employeeAvailability,employeeSalary);
 
             try {
-                boolean isSaved = employeeDAO.save(dto);
+                boolean isSaved = employeeBo.saveEmployee(dto);
                 if(isSaved){
                     new Alert(Alert.AlertType.INFORMATION, "Save Successful").show();
                     loadAllEmployess();
@@ -132,7 +130,7 @@ public class EmployeeFormController {
         EmployeeDto dto=new EmployeeDto(employeeId,employeeName,employeeAddress,employeeType,employeeAvailability,employeeSalary);
 
         try {
-            boolean isUpdated= employeeDAO.update(dto);
+            boolean isUpdated= employeeBo.updateEmployee(dto);
             if(isUpdated){
                 new Alert(Alert.AlertType.INFORMATION, "Update Successful").show();
                 clearFields();
@@ -161,7 +159,7 @@ public class EmployeeFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try {
-                    boolean isDeleted = employeeDAO.delete(employeeId);
+                    boolean isDeleted = employeeBo.deleteEmployee(employeeId);
                     if(isDeleted){
                         new Alert(Alert.AlertType.INFORMATION, "Delete Successful").show();
                         clearFields();

@@ -15,9 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.Mail;
-import lk.ijse.ranweli.dao.custom.TouristDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.TouristBo;
 import lk.ijse.ranweli.dto.TouristDto;
-import lk.ijse.ranweli.dao.custom.impl.TouristDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -41,9 +41,7 @@ public class TouristLoginFormController {
     public Text txtForgetPassword;
 
     public String userEmail;
-    TouristDAO touristDAO = new TouristDAOImpl();
-
-
+    TouristBo touristBo = (TouristBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.TOURIST);
 
     public void initialize() {
         new SlideInLeft(txtSubText).play();
@@ -52,11 +50,11 @@ public class TouristLoginFormController {
     public void loginBtnOnAction(ActionEvent actionEvent) throws SQLException, IOException, ClassNotFoundException {
         String touristId = txtUserId.getText();
         String password = txtPassword.getText();
-        TouristDto tourist = touristDAO.search(touristId);
+        TouristDto tourist = touristBo.searchTourist(touristId);
         if(tourist!=null && tourist.getPassword().equals(password)){
             loggedUser = txtUserId.getText();
             loggedUserName=tourist.getName();
-            String touristEmail = touristDAO.getTouristEmailFromId(txtUserId.getText());
+            String touristEmail = touristBo.getTouristEmailFromId(txtUserId.getText());
             Mail mail1 = new Mail();
             mail1.setMsg("Hi "+tourist.getName()+ ",\n\n\tUser :  "+ tourist.getIdentityDetails() +" \n\n\tNew Login Detected at :  "+ LocalDateTime.now() + " \n\nThank You,\n" +
                     "Ranweli Tours Support Team");
@@ -118,7 +116,7 @@ public class TouristLoginFormController {
 
     public void txtForgetPasswordOnAction(MouseEvent mouseEvent) throws SQLException, ClassNotFoundException {
         if(!txtUserId.getText().isEmpty()){
-            if(touristDAO.search(txtUserId.getText())!=null) {
+            if(touristBo.searchTourist(txtUserId.getText())!=null) {
                 attemptingUser = txtUserId.getText();
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
@@ -134,7 +132,7 @@ public class TouristLoginFormController {
                     if (response == buttonTypeYes) {
                         try {
                             oneTimePassword = generateOTP();
-                            String touristEmail = touristDAO.getTouristEmailFromId(txtUserId.getText());
+                            String touristEmail = touristBo.getTouristEmailFromId(txtUserId.getText());
                             Mail mail = new Mail();
                             mail.setMsg("Hello," + "\n\n\tUser : " + touristEmail + " \n\n\tAn OTP Request Detected at :  " + LocalDateTime.now() + " \n\n\tOTP : " + oneTimePassword + " \n\nThank You,\n" +
                                     "Ranweli Tours Support Team");

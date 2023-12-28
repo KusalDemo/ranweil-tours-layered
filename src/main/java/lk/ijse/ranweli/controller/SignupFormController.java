@@ -17,9 +17,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import lk.ijse.ranweli.dao.custom.AdminDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.AdminBo;
 import lk.ijse.ranweli.dto.AdminDto;
-import lk.ijse.ranweli.dao.custom.impl.AdminDAOImpl;
 
 import java.io.IOException;
 
@@ -32,8 +32,7 @@ public class SignupFormController {
     public Button btnSignUp;
     public Button btnAlreadyHaveAnAccount;
     public Text txtSubText;
-
-    AdminDAO adminDAO = new AdminDAOImpl();
+    AdminBo adminBo = (AdminBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.ADMIN);
 
     public void initialize() {
         new SlideInLeft(txtSubText).play();
@@ -45,9 +44,8 @@ public class SignupFormController {
             String role=txtRole.getText();
 
             AdminDto dto =new AdminDto(email,userName,password,role);
-
             try{
-                boolean isSaved = adminDAO.save(dto);
+                boolean isSaved = adminBo.saveAdmin(dto);
                 if(isSaved){
                     new Alert(Alert.AlertType.INFORMATION, "Sign Up Successful").show();
                 }

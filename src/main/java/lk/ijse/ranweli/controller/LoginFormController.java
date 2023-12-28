@@ -16,9 +16,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.Mail;
-import lk.ijse.ranweli.dao.custom.AdminDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.AdminBo;
 import lk.ijse.ranweli.dto.AdminDto;
-import lk.ijse.ranweli.dao.custom.impl.AdminDAOImpl;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -35,8 +35,7 @@ public class LoginFormController {
     public Button btnBack;
     public Text txtSubText;
     public static String loggedAdmin;
-
-    AdminDAO adminDAO = new AdminDAOImpl();
+    AdminBo adminBo = (AdminBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.ADMIN);
 
     public void initialize() {
         new SlideInLeft(txtSubText).play();
@@ -44,13 +43,13 @@ public class LoginFormController {
     public void loginbtnOnAction(ActionEvent actionEvent)   {
         String email = txtUserName.getText();
         try {
-            AdminDto admindto= adminDAO.search(email);
+            AdminDto admin= adminBo.searchAdmin(email);
 
-            if(admindto != null){
-                if(admindto.getPassword().equals(txtPassword.getText())){
+            if(admin != null){
+                if(admin.getPassword().equals(txtPassword.getText())){
                     //new Alert(Alert.AlertType.INFORMATION, "Login Successful").show();
                     System.out.println("Login Successful");
-                    loggedAdmin=admindto.getUserName();
+                    loggedAdmin=admin.getUserName();
                     try{
                         Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard_form.fxml"));
                         Scene scene1 = new Scene(root);

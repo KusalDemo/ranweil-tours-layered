@@ -15,8 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.custom.PaymentDAO;
-import lk.ijse.ranweli.dao.custom.impl.PaymentDAOImpl;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.PaymentBo;
 import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class DashboardFormController {
     public Text txtWelcome;
     public Text txtLoggedAdminName;
     public AnchorPane btnConfirmJourney;
-    PaymentDAO paymentDAO = new PaymentDAOImpl();
+    PaymentBo paymentBo= (PaymentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PAYMENT);
 
     //private Label lblTime;
     //private volatile boolean stop;
@@ -176,7 +176,7 @@ public class DashboardFormController {
             public void run() {
                 System.out.println("End of month reached!");
                 try {
-                    boolean isResetSuccessfully = paymentDAO.resetAvailability();
+                    boolean isResetSuccessfully = paymentBo.resetAvailability();
                     if(isResetSuccessfully) {
                         System.out.println("Availability reset successfully.");
                     } else {

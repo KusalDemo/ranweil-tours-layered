@@ -16,11 +16,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lk.ijse.ranweli.Mail;
 import lk.ijse.ranweli.QRGenerator;
-import lk.ijse.ranweli.dao.custom.PaymentDAO;
-import lk.ijse.ranweli.dao.custom.TouristDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.PaymentBo;
+import lk.ijse.ranweli.bo.custom.TouristBo;
 import lk.ijse.ranweli.dto.PaymentDto;
-import lk.ijse.ranweli.dao.custom.impl.PaymentDAOImpl;
-import lk.ijse.ranweli.dao.custom.impl.TouristDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
@@ -53,8 +52,8 @@ public class PaymentFormController {
     public ImageView imgUpload;
     public Text txtUploadImageState;
     public Text txtPayment;
-    PaymentDAO paymentDAO = new PaymentDAOImpl();
-    TouristDAO touristDAO = new TouristDAOImpl();
+    PaymentBo paymentBo = (PaymentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PAYMENT);
+    TouristBo touristBo = (TouristBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.TOURIST);
 
 
     public void initialize(){
@@ -104,10 +103,10 @@ public class PaymentFormController {
             alert.showAndWait().ifPresent(response -> {
                 if (response == buttonTypeYes) {
                     try{
-                        PaymentDto paymentDto = new PaymentDto(txtId.getText(), Double.parseDouble(txtAmount.getText()), "PAID", date, "ONLINE", imageData);
-                        boolean isSaved = paymentDAO.save(paymentDto);
+                        PaymentDto dto = new PaymentDto(txtId.getText(), Double.parseDouble(txtAmount.getText()), "PAID", date, "ONLINE", imageData);
+                        boolean isSaved = paymentBo.savePayment(dto);
                         if(isSaved){
-                            boolean isTransactionCompleted = paymentDAO.update(BookingFormController.selectedVehicleId, BookingFormController.selectedHotelId, BookingFormController.selectedGuideId, BookingFormController.selectedDriverId);
+                            boolean isTransactionCompleted = paymentBo.update(BookingFormController.selectedVehicleId, BookingFormController.selectedHotelId, BookingFormController.selectedGuideId, BookingFormController.selectedDriverId);
                             new Alert(Alert.AlertType.CONFIRMATION, "Payment Successful").show();
                             if (isTransactionCompleted){
                                 System.out.println("Transaction Completed");
@@ -123,7 +122,7 @@ public class PaymentFormController {
                                 String filepath = "/home/kitty/Documents/qrCodes/"+ "qr"+txtId.getText() +".png";
                                 boolean isGenerated = QRGenerator.generateQrCode(values, 1250, 1250, filepath);
 
-                                String touristEmail = touristDAO.getTouristEmailFromId(TouristLoginFormController.loggedUser);
+                                String touristEmail = touristBo.getTouristEmailFromId(TouristLoginFormController.loggedUser);
                                 if(isGenerated){
                                     Mail mail = new Mail();
                                     mail.setMsg("Payment Successful..");
@@ -229,7 +228,7 @@ public class PaymentFormController {
                 JasperExportManager.exportReportToPdfFile(jasperPrint,filePath);
                 System.out.println("Receipt Saved Successfully..");
 
-                String touristEmail = touristDAO.getTouristEmailFromId(TouristLoginFormController.loggedUser);
+                String touristEmail = touristBo.getTouristEmailFromId(TouristLoginFormController.loggedUser);
                 Mail mail = new Mail();
                 mail.setMsg("Payment Receipt for Payment : "+txtId);
                 mail.setTo(touristEmail);

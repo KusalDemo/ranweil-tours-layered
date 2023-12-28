@@ -1,11 +1,11 @@
 package lk.ijse.ranweli.dao.custom;
 
 import lk.ijse.ranweli.dao.CrudDAO;
-import lk.ijse.ranweli.dto.TouristDto;
+import lk.ijse.ranweli.entity.Tourist;
 
 import java.sql.SQLException;
 
-public interface TouristDAO extends CrudDAO<TouristDto> {
+public interface TouristDAO extends CrudDAO<Tourist> {
     /*boolean saveTourist(TouristDto dto) throws SQLException, ClassNotFoundException;
     TouristDto getTourist(String id) throws SQLException, ClassNotFoundException;*/
     String getTouristEmailFromId(String id) throws SQLException, ClassNotFoundException;

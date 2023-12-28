@@ -13,8 +13,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.custom.*;
-import lk.ijse.ranweli.dao.custom.impl.*;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.*;
 import lk.ijse.ranweli.dto.EmployeeDto;
 import lk.ijse.ranweli.dto.HotelDto;
 import lk.ijse.ranweli.dto.PackageDto;
@@ -27,6 +27,7 @@ import org.controlsfx.control.Notifications;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookingFormController {
@@ -60,12 +61,10 @@ public class BookingFormController {
     public static String selectedGuideId;
     public static String selectedVehicleId;
     public static String selectedDriverId;
-
-    BookingDAO bookingDAO = new BookingDAOImpl();
-    EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-    HotelDAO hotelDAO = new HotelDAOImpl();
-    PackageDAO packageDAO = new PackageDAOImpl();
-    VehicleDAO vehicleDAO=new VehicleDAOImpl();
+    EmployeeBo employeeBo = (EmployeeBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.EMPLOYEE);
+    HotelBo hotelBo = (HotelBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.HOTEL);
+    PackageBo packageBo = (PackageBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PACKAGE);
+    VehicleBo vehicleBo=(VehicleBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.VEHICLE);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         loadTableDetails();
@@ -123,10 +122,10 @@ public class BookingFormController {
         ObservableList<EmployeeTm> obListGuides = FXCollections.observableArrayList();
         ObservableList<HotelTm> obListHotels = FXCollections.observableArrayList();
         ObservableList<PackageTm> obListPackages = FXCollections.observableArrayList();
-        List<VehicleDto> allVehicles = vehicleDAO.getAll();
-        List<EmployeeDto> allEmployees = employeeDAO.getAll();
-        List<HotelDto> allHotels = hotelDAO.getAll();
-        List<PackageDto> allPackages = packageDAO.getAll();
+        List<VehicleDto> allVehicles = vehicleBo.getAllVehicles();
+        List<EmployeeDto> allEmployees = employeeBo.getAllEmployees();
+        List<HotelDto> allHotels = hotelBo.getAllHotels();
+        ArrayList<PackageDto> allPackages = packageBo.getAllPackages();
 
         for (EmployeeDto dto : allEmployees) {
             if((dto.getEmpType().equals("GUIDE")) && (dto.getEmpAvailability().equals("YES"))){
@@ -184,10 +183,10 @@ public class BookingFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try{
-                    boolean isBookingTempUpdated = bookingDAO.save(selectedHotelId, selectedPackageId, selectedVehicleId);
+                    /*boolean isBookingTempUpdated = bookingBo.saveBooking(selectedHotelId, selectedPackageId, selectedVehicleId);
                     if(isBookingTempUpdated){
                         System.out.println("Temparory Updated");
-                    }
+                    }*/
                     Parent root = FXMLLoader.load(getClass().getResource("/view/payment_form.fxml"));
                     Scene scene1 = new Scene(root);
                     Stage stage1 = (Stage) btnConfirmBooking.getScene().getWindow();

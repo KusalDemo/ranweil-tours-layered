@@ -13,11 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import lk.ijse.ranweli.dao.custom.PaymentDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.PaymentBo;
 import lk.ijse.ranweli.db.DbConnection;
 import lk.ijse.ranweli.dto.PaymentDto;
 import lk.ijse.ranweli.dto.tm.PaymentTm;
-import lk.ijse.ranweli.dao.custom.impl.PaymentDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -44,7 +44,7 @@ public class PaymentManageFormController {
     public Button btnView;
     public Button btnBack;
     public Button btnReport;
-    PaymentDAO paymentDAO = new PaymentDAOImpl();
+    PaymentBo paymentBo = (PaymentBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PAYMENT);
 
     public void initialize() throws SQLException, ClassNotFoundException {
         setAllPayments();
@@ -62,7 +62,7 @@ public class PaymentManageFormController {
     }
     public void btnViewOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         String id= txtPayId.getText();
-        Image receipt = paymentDAO.getReceipt(id);
+        Image receipt = paymentBo.getReceipt(id);
         try{
             ImageView imageView = new ImageView(receipt);
             //ScrollPane scrollPane = new ScrollPane(imageView);
@@ -88,7 +88,7 @@ public class PaymentManageFormController {
     }
     public void setAllPayments() throws SQLException, ClassNotFoundException {
         ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
-        ArrayList<PaymentDto> allPayments = paymentDAO.getAll();
+        ArrayList<PaymentDto> allPayments = paymentBo.getAllPayments();
 
         for (PaymentDto dto : allPayments){
             obList.add(new PaymentTm(

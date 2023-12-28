@@ -12,13 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import lk.ijse.ranweli.dao.custom.PackageDAO;
+import lk.ijse.ranweli.bo.BOFactory;
+import lk.ijse.ranweli.bo.custom.PackageBo;
 import lk.ijse.ranweli.dto.PackageDto;
 import lk.ijse.ranweli.dto.tm.PackageTm;
-import lk.ijse.ranweli.dao.custom.impl.PackageDAOImpl;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 public class PackageFormController {
 
@@ -32,8 +32,8 @@ public class PackageFormController {
     public TableColumn<?,?> colPrice;
     public TextField txtDescription;
     public Button btnBack;
-    public Text txtPackage;
-    PackageDAO packageDAO = new PackageDAOImpl();
+    public Text txtPackage;;
+    PackageBo packageBo = (PackageBo) BOFactory.getBoFactory().getBO(BOFactory.BOType.PACKAGE);
 
     public void initialize(){
         new SlideInLeft(txtPackage).play();
@@ -60,8 +60,8 @@ public class PackageFormController {
     public void loadAllPackages(){
         try{
             ObservableList<PackageTm> obList = FXCollections.observableArrayList();
-            List<PackageDto> dtoLIst = packageDAO.getAll();
-            for(PackageDto dto: dtoLIst){
+            ArrayList<PackageDto> packages = packageBo.getAllPackages();
+            for(PackageDto dto: packages){
                 obList.add(new PackageTm(dto.getPackageId(),dto.getPackageName(),dto.getDescription(),dto.getPrice()));
             }
             tblPackage.setItems(obList);
@@ -79,7 +79,7 @@ public class PackageFormController {
 
         PackageDto dto = new PackageDto(packageId, packageName, description, price);
         try{
-            if(packageDAO.save(dto)){
+            if(packageBo.savePackage(dto)){
                 new Alert(Alert.AlertType.INFORMATION, "Package Saved").show();
                 clearFields();
                 loadAllPackages();
@@ -99,7 +99,7 @@ public class PackageFormController {
 
         PackageDto dto = new PackageDto(packageId, packageName, description, price);
         try{
-            if(packageDAO.update(dto)){
+            if(packageBo.updatePackage(dto)){
                 new Alert(Alert.AlertType.INFORMATION, "Package Updated").show();
                 clearFields();
                 loadAllPackages();
@@ -126,7 +126,7 @@ public class PackageFormController {
         alert.showAndWait().ifPresent(response -> {
             if (response == buttonTypeYes) {
                 try{
-                    if(packageDAO.delete(packageId)){
+                    if(packageBo.deletePackage(packageId)){
                         new Alert(Alert.AlertType.INFORMATION, "Package Deleted").show();
                         clearFields();
                         loadAllPackages();
